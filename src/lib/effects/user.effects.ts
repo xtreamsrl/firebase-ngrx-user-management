@@ -48,7 +48,6 @@ export class UserEffects {
       return new userActions.GetUser();
     }));
 
-
   @Effect()
   loginFacebook: Observable<Action> = this.actions.pipe(ofType(userActions.FACEBOOK_LOGIN),
 

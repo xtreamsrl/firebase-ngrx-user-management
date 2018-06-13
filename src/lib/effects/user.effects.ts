@@ -48,10 +48,6 @@ export class UserEffects {
       return new userActions.GetUser();
     }));
 
-  private googleLogin(): Promise<any> {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    return this.afAuth.auth.signInWithPopup(provider);
-  }
 
   @Effect()
   loginFacebook: Observable<Action> = this.actions.pipe(ofType(userActions.FACEBOOK_LOGIN),
@@ -69,4 +65,10 @@ export class UserEffects {
     const provider = new firebase.auth.FacebookAuthProvider();
     return this.afAuth.auth.signInWithPopup(provider);
   }
+
+  private googleLogin(): Promise<any> {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    return this.afAuth.auth.signInWithPopup(provider);
+  }
+
 }

@@ -1,33 +1,33 @@
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@ngrx/effects';
-import {User} from '../models/user.model';
+import {User} from '../models/auth.model';
 
 import {AngularFireAuth} from 'angularfire2/auth';
 
 import {catchError, exhaustMap, map, mergeMap} from 'rxjs/operators';
-import * as userActions from '../actions/user.actions';
+import * as userActions from '../actions/auth.actions';
 import {from, Observable} from 'rxjs';
 import * as firebase from 'firebase';
 
 export type Action = userActions.All;
 
 @Injectable()
-export class UserEffects {
+export class AuthEffects {
 
   constructor(private actions: Actions,
               private afAuth: AngularFireAuth) {
   }
 
   @Effect()
-  getUser: Observable<Action> = this.actions.pipe(ofType<userActions.GET_USER>(userActions.GET_USER),
+  getUser: Observable<Action> = this.actions.pipe(ofType<userActions.GetUser>(userActions.GET_USER),
     map((action: userActions.GetUser) => action.payload),
-    mergeMap(payload => this.afAuth.authState),
+    exhaustMap(payload => this.afAuth.authState),
     map(authData => {
       console.debug(authData);
       if (authData) {
         /// User logged in
         console.debug('USER', authData);
-        const user = new User(authData.uid, authData.displayName);
+        const user = new User(authData.uid, authData.displayName, authData.email);
         return new userActions.Authenticated(user);
       } else {
         /// User not logged in
@@ -37,8 +37,8 @@ export class UserEffects {
     }));
 
   @Effect()
-  login: Observable<Action> = this.actions.pipe(ofType(userActions.GOOGLE_LOGIN),
-
+  login: Observable<Action> = this.actions.pipe(
+    ofType(userActions.GOOGLE_LOGIN),
     map((action: userActions.GoogleLogin) => action.payload),
     exhaustMap(payload => {
       return from(this.googleLogin());
@@ -59,6 +59,24 @@ export class UserEffects {
       // successful login
       return new userActions.GetUser();
     }));
+
+  @Effect()
+  loginCredentials: Observable<Action> = this.actions.pipe(
+    ofType(userActions.CREDENTIALS_LOGIN),
+    map((action: userActions.CredentialsLogin) => {
+      return {
+        email: action.email,
+        password: action.password
+      };
+    }),
+    exhaustMap(credentials => {
+      return from(this.credentialsLogin(credentials));
+    }),
+    map(p => {
+      // successful login
+      return new userActions.GetUser();
+    })
+  );
 
   @Effect()
   logout: Observable<Action> = this.actions.pipe(
@@ -82,4 +100,7 @@ export class UserEffects {
     return this.afAuth.auth.signInWithPopup(provider);
   }
 
+  private credentialsLogin(credentials: { email: string, password: string }): Promise<any> {
+    return this.afAuth.auth.signInWithEmailAndPassword(credentials.email, credentials.password);
+  }
 }

@@ -1,9 +1,9 @@
-import * as userActions from '../actions/user.actions';
-import {User} from '../models/user.model';
+import * as userActions from '../actions/auth.actions';
+import {User} from '../models/auth.model';
 
 export type Action = userActions.All;
 
-const defaultUser = new User(null, 'GUEST');
+const defaultUser = new User(null, 'GUEST', 'suca@suca');
 
 /// Reducer function
 export function userReducer(state: User = defaultUser, action: Action): User {

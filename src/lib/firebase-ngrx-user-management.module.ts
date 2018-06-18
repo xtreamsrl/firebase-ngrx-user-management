@@ -4,7 +4,7 @@ import {StoreModule} from '@ngrx/store';
 
 import {AngularFireAuthModule} from 'angularfire2/auth';
 import {userReducer} from './reducers/user.reducer';
-import {UserEffects} from './effects/user.effects';
+import {AuthEffects} from './effects/auth.effects';
 import {AngularFireModule} from 'angularfire2';
 
 @NgModule({
@@ -12,7 +12,7 @@ import {AngularFireModule} from 'angularfire2';
     AngularFireModule,
     AngularFireAuthModule,
     EffectsModule.forFeature([
-      UserEffects
+      AuthEffects
     ]),
 
     StoreModule.forFeature('user', userReducer)

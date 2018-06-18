@@ -1,5 +1,5 @@
 import {Action} from '@ngrx/store';
-import {User} from '../models/user.model';
+import {User} from '../models/auth.model';
 
 export const GET_USER = '[Auth] Get user';
 export const AUTHENTICATED = '[Auth] Authenticated';
@@ -7,6 +7,7 @@ export const NOT_AUTHENTICATED = '[Auth] Not Authenticated';
 
 export const GOOGLE_LOGIN = '[Auth] Google login attempt';
 export const FACEBOOK_LOGIN = '[Auth] Facebook login attempt';
+export const CREDENTIALS_LOGIN = '[Auth] Credentials login attempt';
 
 export const LOGOUT = '[Auth] Logout';
 
@@ -60,6 +61,13 @@ export class FacebookLogin implements Action {
   }
 }
 
+export class CredentialsLogin implements Action {
+  readonly type = CREDENTIALS_LOGIN;
+
+  constructor(public email: string, public password: string) {
+  }
+}
+
 /// Logout Actions
 
 export class Logout implements Action {
@@ -75,5 +83,6 @@ export type All
   | NotAuthenticated
   | GoogleLogin
   | FacebookLogin
+  | CredentialsLogin
   | AuthError
   | Logout;

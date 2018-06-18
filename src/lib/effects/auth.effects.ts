@@ -27,7 +27,7 @@ export class AuthEffects {
       if (authData) {
         /// User logged in
         console.debug('USER', authData);
-        const user = new User(authData.uid, authData.displayName, authData.email);
+        const user = new User(authData.uid, authData.displayName, authData.email, authData.photoURL);
         return new userActions.Authenticated(user);
       } else {
         /// User not logged in

@@ -15,7 +15,7 @@ import {AngularFireModule} from 'angularfire2';
       AuthEffects
     ]),
 
-    StoreModule.forFeature('user', userReducer)
+    StoreModule.forFeature('auth', userReducer)
   ],
   declarations: [],
   exports: []

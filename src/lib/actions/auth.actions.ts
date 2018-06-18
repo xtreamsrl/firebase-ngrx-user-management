@@ -25,7 +25,8 @@ export class GetUser implements Action {
 export class Authenticated implements Action {
   readonly type = AUTHENTICATED;
 
-  constructor(public payload?: any) {
+  constructor(public payload?: User) {
+
   }
 }
 

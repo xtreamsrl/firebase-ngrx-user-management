@@ -12,7 +12,7 @@ import * as firebase from 'firebase';
 export type Action = userActions.All;
 
 @Injectable()
-export class AuthEffects {
+export class LoginEffects {
 
   constructor(private actions: Actions,
               private afAuth: AngularFireAuth) {
@@ -37,11 +37,11 @@ export class AuthEffects {
     }));
 
   @Effect()
-  login: Observable<Action> = this.actions.pipe(
+  googleLogin: Observable<Action> = this.actions.pipe(
     ofType(userActions.GOOGLE_LOGIN),
     map((action: userActions.GoogleLogin) => action.payload),
     exhaustMap(payload => {
-      return from(this.googleLogin());
+      return from(this.doGoogleLogin());
     }),
     map(credential => {
       // successful login
@@ -49,11 +49,11 @@ export class AuthEffects {
     }));
 
   @Effect()
-  loginFacebook: Observable<Action> = this.actions.pipe(ofType(userActions.FACEBOOK_LOGIN),
+  facebookLogin: Observable<Action> = this.actions.pipe(ofType(userActions.FACEBOOK_LOGIN),
 
     map((action: userActions.FacebookLogin) => action.payload),
     exhaustMap(payload => {
-      return from(this.facebookLogin());
+      return from(this.doFacebookLogin());
     }),
     map(credential => {
       // successful login
@@ -61,7 +61,7 @@ export class AuthEffects {
     }));
 
   @Effect()
-  loginCredentials: Observable<Action> = this.actions.pipe(
+  loginWithCredentials: Observable<Action> = this.actions.pipe(
     ofType(userActions.CREDENTIALS_LOGIN),
     map((action: userActions.CredentialsLogin) => {
       return {
@@ -70,7 +70,7 @@ export class AuthEffects {
       };
     }),
     exhaustMap(credentials => {
-      return from(this.credentialsLogin(credentials));
+      return from(this.doLoginWithCredentials(credentials));
     }),
     map(p => {
       // successful login
@@ -90,17 +90,17 @@ export class AuthEffects {
     })
   );
 
-  private facebookLogin(): Promise<any> {
+  private doFacebookLogin(): Promise<any> {
     const provider = new firebase.auth.FacebookAuthProvider();
     return this.afAuth.auth.signInWithPopup(provider);
   }
 
-  private googleLogin(): Promise<any> {
+  private doGoogleLogin(): Promise<any> {
     const provider = new firebase.auth.GoogleAuthProvider();
     return this.afAuth.auth.signInWithPopup(provider);
   }
 
-  private credentialsLogin(credentials: { email: string, password: string }): Promise<any> {
+  private doLoginWithCredentials(credentials: { email: string, password: string }): Promise<any> {
     return this.afAuth.auth.signInWithEmailAndPassword(credentials.email, credentials.password);
   }
 }

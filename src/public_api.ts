@@ -9,5 +9,6 @@ export * from './lib/firebase-ngrx-user-management.module';
 export * from './lib/actions/auth.actions';
 
 import {AuthState} from './lib/reducers/user.reducer';
+import {Credentials} from './lib/models/credentials';
 
-export {AuthState, IUser, User};
+export {AuthState, Credentials, IUser, User};

@@ -20,7 +20,7 @@ export class RegistrationEffects {
 
   @Effect()
   googleSignUp: Observable<Action> = this.actions.pipe(
-    ofType(userActions.GOOGLE_REGISTRATION),
+    ofType(userActions.AuthActionTypes.GOOGLE_REGISTRATION),
     map((action: userActions.GoogleRegistration) => action.payload),
     exhaustMap(payload => {
       return from(this.doGoogleRegistration());
@@ -31,7 +31,7 @@ export class RegistrationEffects {
 
   @Effect()
   facebookSignUp: Observable<Action> = this.actions.pipe(
-    ofType(userActions.FACEBOOK_REGISTRATION),
+    ofType(userActions.AuthActionTypes.FACEBOOK_REGISTRATION),
     map((action: userActions.FacebookRegistration) => action.payload),
     exhaustMap(payload => {
       return from(this.doFacebookRegistration());
@@ -42,7 +42,7 @@ export class RegistrationEffects {
 
   @Effect()
   signUpWithCredentials: Observable<Action> = this.actions.pipe(
-    ofType(userActions.CREDENTIALS_REGISTRATION),
+    ofType(userActions.AuthActionTypes.CREDENTIALS_REGISTRATION),
     map((action: userActions.CredentialsRegistration) => {
       return {
         email: action.payload.email,

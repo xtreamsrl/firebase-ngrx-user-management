@@ -19,22 +19,22 @@ const defaultState = {
 export function userReducer(state: AuthState = defaultState, action: Action): AuthState {
   switch (action.type) {
 
-    case userActions.GET_USER:
+    case userActions.AuthActionTypes.GET_USER:
       return {...state, loading: true};
 
-    case userActions.AUTHENTICATED:
+    case userActions.AuthActionTypes.AUTHENTICATED:
       return {...state, user: action.payload, loading: false, loggedIn: true};
 
-    case userActions.NOT_AUTHENTICATED:
+    case userActions.AuthActionTypes.NOT_AUTHENTICATED:
       return {...state, ...defaultState, loading: false, loggedIn: false};
 
-    case userActions.GOOGLE_LOGIN:
+    case userActions.AuthActionTypes.GOOGLE_LOGIN:
       return {...state, loading: true};
 
-    case userActions.AUTH_ERROR:
+    case userActions.AuthActionTypes.AUTH_ERROR:
       return {...state, ...action.payload, loading: false};
 
-    case userActions.LOGOUT:
+    case userActions.AuthActionTypes.LOGOUT:
       return {...state, loading: true};
     default:
       return state;

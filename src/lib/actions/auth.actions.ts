@@ -2,32 +2,30 @@ import {Action} from '@ngrx/store';
 import {User} from '../models/auth.model';
 import {Credentials} from '../models/credentials';
 
-export const GET_USER = '[Auth] Get user';
-export const AUTHENTICATED = '[Auth] Authenticated';
-export const NOT_AUTHENTICATED = '[Auth] Not Authenticated';
-
-export const GOOGLE_LOGIN = '[Auth] Google login attempt';
-export const FACEBOOK_LOGIN = '[Auth] Facebook login attempt';
-export const CREDENTIALS_LOGIN = '[Auth] Credentials login attempt';
-
-export const GOOGLE_REGISTRATION = '[Auth] Google registration attempt';
-export const FACEBOOK_REGISTRATION = '[Auth] Facebook registration attempt';
-export const CREDENTIALS_REGISTRATION = '[Auth] Credentials registration attempt';
-export const REGISTRATION_COMPLETED = '[Auth] Registration completed';
-
-export const LOGOUT = '[Auth] Logout';
-
-export const AUTH_ERROR = '[Auth] Error';
+export enum AuthActionTypes {
+  GET_USER = '[Auth] Get user',
+  AUTHENTICATED = '[Auth] Authenticated',
+  NOT_AUTHENTICATED = '[Auth] Not Authenticated',
+  GOOGLE_LOGIN = '[Auth] Google login attempt',
+  FACEBOOK_LOGIN = '[Auth] Facebook login attempt',
+  CREDENTIALS_LOGIN = '[Auth] Credentials login attempt',
+  GOOGLE_REGISTRATION = '[Auth] Google registration attempt',
+  FACEBOOK_REGISTRATION = '[Auth] Facebook registration attempt',
+  CREDENTIALS_REGISTRATION = '[Auth] Credentials registration attempt',
+  REGISTRATION_COMPLETED = '[Auth] Registration completed',
+  LOGOUT = '[Auth] Logout',
+  AUTH_ERROR = '[Auth] Error'
+}
 
 export class GetUser implements Action {
-  readonly type = GET_USER;
+  readonly type = AuthActionTypes.GET_USER;
 
   constructor(public payload?: any) {
   }
 }
 
 export class Authenticated implements Action {
-  readonly type = AUTHENTICATED;
+  readonly type = AuthActionTypes.AUTHENTICATED;
 
   constructor(public payload?: User) {
 
@@ -35,70 +33,70 @@ export class Authenticated implements Action {
 }
 
 export class NotAuthenticated implements Action {
-  readonly type = NOT_AUTHENTICATED;
+  readonly type = AuthActionTypes.NOT_AUTHENTICATED;
 
   constructor(public payload?: any) {
   }
 }
 
 export class AuthError implements Action {
-  readonly type = AUTH_ERROR;
+  readonly type = AuthActionTypes.AUTH_ERROR;
 
   constructor(public payload?: any) {
   }
 }
 
 export class GoogleRegistration implements Action {
-  readonly type = GOOGLE_REGISTRATION;
+  readonly type = AuthActionTypes.GOOGLE_REGISTRATION;
 
   constructor(public payload?: any) {
   }
 }
 
 export class FacebookRegistration implements Action {
-  readonly type = FACEBOOK_REGISTRATION;
+  readonly type = AuthActionTypes.FACEBOOK_REGISTRATION;
 
   constructor(public payload?: any) {
   }
 }
 
 export class CredentialsRegistration implements Action {
-  readonly type = CREDENTIALS_REGISTRATION;
+  readonly type = AuthActionTypes.CREDENTIALS_REGISTRATION;
 
   constructor(public payload: Credentials) {
   }
 }
 
 export class RegistrationCompleted implements Action {
-  readonly type = REGISTRATION_COMPLETED;
+  readonly type = AuthActionTypes.REGISTRATION_COMPLETED;
 
   constructor(public payload?: any) {
   }
 }
 
 export class Logout implements Action {
-  readonly type = LOGOUT;
+  readonly type = AuthActionTypes.LOGOUT;
 
   constructor(public payload?: any) {
   }
 }
 
 export class GoogleLogin implements Action {
-  readonly type = GOOGLE_LOGIN;
+  readonly type = AuthActionTypes.GOOGLE_LOGIN;
 
   constructor(public payload?: any) {
   }
 }
 
 export class FacebookLogin implements Action {
-  readonly type = FACEBOOK_LOGIN;
+  readonly type = AuthActionTypes.FACEBOOK_LOGIN;
 
   constructor(public payload?: any) {
   }
 }
 
 export class CredentialsLogin implements Action {
-  readonly type = CREDENTIALS_LOGIN;
+  readonly type = AuthActionTypes.CREDENTIALS_LOGIN;
 
   constructor(public email: string, public password: string) {
   }

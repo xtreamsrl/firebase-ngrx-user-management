@@ -1,12 +1,12 @@
-import {Injectable} from '@angular/core';
-import {Actions, Effect, ofType} from '@ngrx/effects';
-import {User} from '../models/auth.model';
+import { Injectable } from '@angular/core';
+import { Actions, Effect, ofType } from '@ngrx/effects';
+import { User } from '../models/auth.model';
 
-import {AngularFireAuth} from 'angularfire2/auth';
+import { AngularFireAuth } from 'angularfire2/auth';
 
-import {catchError, exhaustMap, map, mergeMap} from 'rxjs/operators';
+import { catchError, exhaustMap, map, mergeMap } from 'rxjs/operators';
 import * as userActions from '../actions/auth.actions';
-import {from, Observable} from 'rxjs';
+import { from, Observable } from 'rxjs';
 import * as firebase from 'firebase';
 
 export type Action = userActions.All;
@@ -66,7 +66,8 @@ export class LoginEffects {
     map((action: userActions.CredentialsLogin) => {
       return {
         email: action.email,
-        password: action.password
+        password: action.password,
+        remember: (action.remember) ? action.remember : false
       };
     }),
     exhaustMap(credentials => {
@@ -100,7 +101,15 @@ export class LoginEffects {
     return this.afAuth.auth.signInWithPopup(provider);
   }
 
-  private doLoginWithCredentials(credentials: { email: string, password: string }): Promise<any> {
-    return this.afAuth.auth.signInWithEmailAndPassword(credentials.email, credentials.password);
+  private doLoginWithCredentials(credentials: { email: string, password: string, remember?: boolean }): Promise<any> {
+    if (credentials.remember) {
+      return this.afAuth.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(() => {
+        return this.afAuth.auth.signInWithEmailAndPassword(credentials.email, credentials.password);
+      });
+    } else {
+      return this.afAuth.auth.setPersistence(firebase.auth.Auth.Persistence.SESSION).then(() => {
+        return this.afAuth.auth.signInWithEmailAndPassword(credentials.email, credentials.password);
+      });
+    }
   }
 }

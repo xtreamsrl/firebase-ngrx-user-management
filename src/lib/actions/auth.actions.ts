@@ -98,7 +98,7 @@ export class FacebookLogin implements Action {
 export class CredentialsLogin implements Action {
   readonly type = AuthActionTypes.CREDENTIALS_LOGIN;
 
-  constructor(public email: string, public password: string) {
+  constructor(public email: string, public password: string, public remember?: boolean) {
   }
 }
 

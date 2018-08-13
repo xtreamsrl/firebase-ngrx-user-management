@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
-import { User } from '../models/auth.model';
+import {Injectable} from '@angular/core';
+import {Actions, Effect, ofType} from '@ngrx/effects';
+import {User} from '../models/auth.model';
 
-import { AngularFireAuth } from 'angularfire2/auth';
+import {AngularFireAuth} from 'angularfire2/auth';
 
-import { catchError, exhaustMap, map, mergeMap } from 'rxjs/operators';
+import {catchError, exhaustMap, map, mergeMap} from 'rxjs/operators';
 import * as userActions from '../actions/auth.actions';
-import { from, Observable } from 'rxjs';
+import {from, Observable, of} from 'rxjs';
 import * as firebase from 'firebase';
 
 export type Action = userActions.All;
@@ -41,24 +41,30 @@ export class LoginEffects {
     ofType(userActions.AuthActionTypes.GOOGLE_LOGIN),
     map((action: userActions.GoogleLogin) => action.payload),
     exhaustMap(payload => {
-      return from(this.doGoogleLogin());
+      return from(this.doGoogleLogin()).pipe(
+        catchError(error => of(new userActions.AuthError(error)))
+      );
     }),
     map(credential => {
       // successful login
       return new userActions.GetUser();
-    }));
+    })
+  );
 
   @Effect()
   facebookLogin: Observable<Action> = this.actions.pipe(ofType(userActions.AuthActionTypes.FACEBOOK_LOGIN),
 
     map((action: userActions.FacebookLogin) => action.payload),
     exhaustMap(payload => {
-      return from(this.doFacebookLogin());
+      return from(this.doFacebookLogin()).pipe(
+        catchError(error => of(new userActions.AuthError(error)))
+      );
     }),
     map(credential => {
       // successful login
       return new userActions.GetUser();
-    }));
+    })
+  );
 
   @Effect()
   loginWithCredentials: Observable<Action> = this.actions.pipe(
@@ -71,7 +77,9 @@ export class LoginEffects {
       };
     }),
     exhaustMap(credentials => {
-      return from(this.doLoginWithCredentials(credentials));
+      return from(this.doLoginWithCredentials(credentials)).pipe(
+        catchError(error => of(new userActions.AuthError(error)))
+      );
     }),
     map(p => {
       // successful login

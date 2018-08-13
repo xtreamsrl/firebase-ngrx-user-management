@@ -7,12 +7,16 @@ export interface AuthState {
   loggedIn: boolean;
   user: User | null;
   loading: boolean;
+  error: {
+    code: string;
+  };
 }
 
 const defaultState = {
   loggedIn: false,
   user: new User(null, 'GUEST', 'suca@suca'),
-  loading: false
+  loading: false,
+  error: null
 };
 
 /// Reducer function
@@ -32,7 +36,7 @@ export function userReducer(state: AuthState = defaultState, action: Action): Au
       return {...state, loading: true};
 
     case userActions.AuthActionTypes.AUTH_ERROR:
-      return {...state, ...action.payload, loading: false};
+      return {...state, loading: false, error: {...action.payload}};
 
     case userActions.AuthActionTypes.LOGOUT:
       return {...state, loading: true};

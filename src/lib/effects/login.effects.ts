@@ -41,14 +41,13 @@ export class LoginEffects {
     ofType(userActions.AuthActionTypes.GOOGLE_LOGIN),
     map((action: userActions.GoogleLogin) => action.payload),
     exhaustMap(payload => {
-      return from(this.doGoogleLogin()).pipe(
-        catchError(error => of(new userActions.AuthError(error)))
-      );
+      return from(this.doGoogleLogin())
     }),
     map(credential => {
       // successful login
       return new userActions.GetUser();
-    })
+    }),
+    catchError(error => of(new userActions.AuthError(error)))
   );
 
   @Effect()
@@ -56,14 +55,13 @@ export class LoginEffects {
 
     map((action: userActions.FacebookLogin) => action.payload),
     exhaustMap(payload => {
-      return from(this.doFacebookLogin()).pipe(
-        catchError(error => of(new userActions.AuthError(error)))
-      );
+      return from(this.doFacebookLogin());
     }),
     map(credential => {
       // successful login
       return new userActions.GetUser();
-    })
+    }),
+    catchError(error => of(new userActions.AuthError(error)))
   );
 
   @Effect()
@@ -77,14 +75,13 @@ export class LoginEffects {
       };
     }),
     exhaustMap(credentials => {
-      return from(this.doLoginWithCredentials(credentials)).pipe(
-        catchError(error => of(new userActions.AuthError(error)))
-      );
+      return from(this.doLoginWithCredentials(credentials));
     }),
     map(p => {
       // successful login
       return new userActions.GetUser();
-    })
+    }),
+    catchError(error => of(new userActions.AuthError(error)))
   );
 
   @Effect()

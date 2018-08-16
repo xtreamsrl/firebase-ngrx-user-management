@@ -1,12 +1,11 @@
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@ngrx/effects';
-import {User} from '../models/auth.model';
 
 import {AngularFireAuth} from 'angularfire2/auth';
 
-import {catchError, exhaustMap, map, mergeMap} from 'rxjs/operators';
+import {catchError, exhaustMap, map} from 'rxjs/operators';
 import * as userActions from '../actions/auth.actions';
-import {from, Observable} from 'rxjs';
+import {from, Observable, of} from 'rxjs';
 import * as firebase from 'firebase';
 
 export type Action = userActions.All;
@@ -27,7 +26,9 @@ export class RegistrationEffects {
     }),
     map(credential => {
       return new userActions.RegistrationCompleted();
-    }));
+    }),
+    catchError(error => of(new userActions.AuthError(error)))
+  );
 
   @Effect()
   facebookSignUp: Observable<Action> = this.actions.pipe(
@@ -38,7 +39,9 @@ export class RegistrationEffects {
     }),
     map(credential => {
       return new userActions.RegistrationCompleted();
-    }));
+    }),
+    catchError(error => of(new userActions.AuthError(error)))
+  );
 
   @Effect()
   signUpWithCredentials: Observable<Action> = this.actions.pipe(
@@ -55,7 +58,8 @@ export class RegistrationEffects {
     map(p => {
       // successful login
       return new userActions.RegistrationCompleted();
-    })
+    }),
+    catchError(error => of(new userActions.AuthError(error)))
   );
 
   private doFacebookRegistration(): Promise<any> {

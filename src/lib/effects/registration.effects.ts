@@ -8,7 +8,7 @@ import * as userActions from '../actions/auth.actions';
 import {from, Observable, of} from 'rxjs';
 import * as firebase from 'firebase';
 
-export type Action = userActions.All;
+export type Action = userActions.AuthActionsUnion;
 
 @Injectable()
 export class RegistrationEffects {
@@ -19,7 +19,7 @@ export class RegistrationEffects {
 
   @Effect()
   googleSignUp: Observable<Action> = this.actions.pipe(
-    ofType(userActions.AuthActionTypes.GOOGLE_REGISTRATION),
+    ofType(userActions.AuthActionTypes.GoogleRegistration),
     map((action: userActions.GoogleRegistration) => action.payload),
     exhaustMap(payload => {
       return from(this.doGoogleRegistration());
@@ -32,7 +32,7 @@ export class RegistrationEffects {
 
   @Effect()
   facebookSignUp: Observable<Action> = this.actions.pipe(
-    ofType(userActions.AuthActionTypes.FACEBOOK_REGISTRATION),
+    ofType(userActions.AuthActionTypes.FacebookRegistration),
     map((action: userActions.FacebookRegistration) => action.payload),
     exhaustMap(payload => {
       return from(this.doFacebookRegistration());
@@ -45,7 +45,7 @@ export class RegistrationEffects {
 
   @Effect()
   signUpWithCredentials: Observable<Action> = this.actions.pipe(
-    ofType(userActions.AuthActionTypes.CREDENTIALS_REGISTRATION),
+    ofType(userActions.AuthActionTypes.CredentialsRegistration),
     map((action: userActions.CredentialsRegistration) => {
       return {
         email: action.payload.email,

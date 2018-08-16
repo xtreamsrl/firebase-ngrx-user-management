@@ -9,7 +9,7 @@ import * as userActions from '../actions/auth.actions';
 import {from, Observable, of} from 'rxjs';
 import * as firebase from 'firebase';
 
-export type Action = userActions.All;
+export type Action = userActions.AuthActionsUnion;
 
 @Injectable()
 export class LoginEffects {
@@ -19,7 +19,7 @@ export class LoginEffects {
   }
 
   @Effect()
-  getUser: Observable<Action> = this.actions.pipe(ofType<userActions.GetUser>(userActions.AuthActionTypes.GET_USER),
+  getUser: Observable<Action> = this.actions.pipe(ofType<userActions.GetUser>(userActions.AuthActionTypes.GetUser),
     map((action: userActions.GetUser) => action.payload),
     exhaustMap(payload => this.afAuth.authState),
     map(authData => {
@@ -38,7 +38,7 @@ export class LoginEffects {
 
   @Effect()
   googleLogin: Observable<Action> = this.actions.pipe(
-    ofType(userActions.AuthActionTypes.GOOGLE_LOGIN),
+    ofType(userActions.AuthActionTypes.GoogleLogin),
     map((action: userActions.GoogleLogin) => action.payload),
     exhaustMap(payload => {
       return from(this.doGoogleLogin());
@@ -51,7 +51,7 @@ export class LoginEffects {
   );
 
   @Effect()
-  facebookLogin: Observable<Action> = this.actions.pipe(ofType(userActions.AuthActionTypes.FACEBOOK_LOGIN),
+  facebookLogin: Observable<Action> = this.actions.pipe(ofType(userActions.AuthActionTypes.FacebookLogin),
 
     map((action: userActions.FacebookLogin) => action.payload),
     exhaustMap(payload => {
@@ -66,7 +66,7 @@ export class LoginEffects {
 
   @Effect()
   loginWithCredentials: Observable<Action> = this.actions.pipe(
-    ofType(userActions.AuthActionTypes.CREDENTIALS_LOGIN),
+    ofType(userActions.AuthActionTypes.CredentialsLogin),
     map((action: userActions.CredentialsLogin) => {
       return {
         email: action.email,
@@ -86,7 +86,7 @@ export class LoginEffects {
 
   @Effect()
   logout: Observable<Action> = this.actions.pipe(
-    ofType(userActions.AuthActionTypes.LOGOUT),
+    ofType(userActions.AuthActionTypes.Logout),
     map((action: userActions.Logout) => action.payload),
     exhaustMap(payload => {
       return from(this.afAuth.auth.signOut());

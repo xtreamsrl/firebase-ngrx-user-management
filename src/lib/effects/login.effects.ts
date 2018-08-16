@@ -41,7 +41,7 @@ export class LoginEffects {
     ofType(userActions.AuthActionTypes.GOOGLE_LOGIN),
     map((action: userActions.GoogleLogin) => action.payload),
     exhaustMap(payload => {
-      return from(this.doGoogleLogin())
+      return from(this.doGoogleLogin();
     }),
     map(credential => {
       // successful login

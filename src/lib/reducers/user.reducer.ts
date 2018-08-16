@@ -67,3 +67,8 @@ export const getUser = createSelector(
   getAuthState,
   state => state.user
 );
+
+export const getError = createSelector(
+  getAuthState,
+  state => state.error
+);

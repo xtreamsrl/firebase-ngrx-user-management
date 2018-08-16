@@ -15,8 +15,8 @@ export interface AuthState {
 
 const defaultState = {
   loggedIn: false,
-  user: new User(null, 'GUEST', 'suca@suca'),
-  loading: false,
+  user: null,
+  loading: true,
   error: null
 };
 

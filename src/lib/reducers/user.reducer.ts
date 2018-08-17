@@ -11,13 +11,15 @@ export interface AuthState {
   error: {
     code: string;
   };
+  success: boolean;
 }
 
 const defaultState = {
   loggedIn: false,
   user: null,
   loading: true,
-  error: null
+  error: null,
+  success: false
 };
 
 /// Reducer function
@@ -25,13 +27,13 @@ export function userReducer(state: AuthState = defaultState, action: Action): Au
   switch (action.type) {
 
     case userActions.AuthActionTypes.GetUser:
-      return {...state, loading: true};
+      return {...state, loading: true, success: false};
 
     case userActions.AuthActionTypes.Authenticated:
-      return {...state, user: action.payload, loading: false, loggedIn: true};
+      return {...state, user: action.payload, loading: false, loggedIn: true, success: false};
 
     case userActions.AuthActionTypes.NotAuthenticated:
-      return {...state, ...defaultState, loading: false, loggedIn: false};
+      return {...state, ...defaultState, loading: false, loggedIn: false, success: false};
 
     case userActions.AuthActionTypes.GoogleLogin:
     case userActions.AuthActionTypes.FacebookLogin:
@@ -39,10 +41,14 @@ export function userReducer(state: AuthState = defaultState, action: Action): Au
     case userActions.AuthActionTypes.FacebookRegistration:
     case userActions.AuthActionTypes.CredentialsLogin:
     case userActions.AuthActionTypes.CredentialsRegistration:
-      return {...state, loading: true};
+    case userActions.AuthActionTypes.ResetPasswordRequest:
+      return {...state, loading: true, success: false};
+
+    case userActions.AuthActionTypes.ResetPasswordRequestSuccess:
+      return {...state, loading: false, success: true};
 
     case userActions.AuthActionTypes.AuthError:
-      return {...state, loading: false, error: {...action.payload}};
+      return {...state, loading: false, error: {...action.payload}, success: false};
 
     case userActions.AuthActionTypes.Logout:
       return {...state, loading: true};
@@ -71,4 +77,9 @@ export const getUser = createSelector(
 export const getError = createSelector(
   getAuthState,
   state => state.error
+);
+
+export const isStatusSuccess = createSelector(
+  getAuthState,
+  state => state.success
 );

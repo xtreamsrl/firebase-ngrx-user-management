@@ -4,7 +4,7 @@ import {User} from '../models/auth.model';
 
 import {AngularFireAuth} from 'angularfire2/auth';
 
-import {catchError, exhaustMap, map, mergeMap} from 'rxjs/operators';
+import {catchError, exhaustMap, map} from 'rxjs/operators';
 import * as userActions from '../actions/auth.actions';
 import {from, Observable, of} from 'rxjs';
 import * as firebase from 'firebase';
@@ -93,6 +93,18 @@ export class LoginEffects {
     }),
     map(authData => {
       return new userActions.NotAuthenticated();
+    })
+  );
+
+  @Effect()
+  passwordForgotten$ = this.actions.pipe(
+    ofType<userActions.ResetPasswordRequest>(userActions.AuthActionTypes.ResetPasswordRequest),
+    map((action: userActions.ResetPasswordRequest) => action.payload),
+    exhaustMap(payload => {
+      return from(this.afAuth.auth.sendPasswordResetEmail(payload.email));
+    }),
+    map(authData => {
+      return new userActions.ResetPasswordRequestSuccess();
     })
   );
 

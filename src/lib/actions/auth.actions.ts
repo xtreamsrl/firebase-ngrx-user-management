@@ -14,7 +14,9 @@ export enum AuthActionTypes {
   CredentialsRegistration = '[Auth] Credentials registration attempt',
   RegistrationSuccess = '[Auth] Registration Success',
   Logout = '[Auth] Logout',
-  AuthError = '[Auth] Error'
+  AuthError = '[Auth] Error',
+  ResetPasswordRequest = '[Auth] Reset Password Request',
+  ResetPasswordRequestSuccess = '[Auth] Reset Password Request Success'
 }
 
 export class GetUser implements Action {
@@ -102,6 +104,20 @@ export class CredentialsLogin implements Action {
   }
 }
 
+export class ResetPasswordRequest implements Action {
+  readonly type = AuthActionTypes.ResetPasswordRequest;
+
+  constructor(public payload: { email: string }) {
+  }
+}
+
+export class ResetPasswordRequestSuccess implements Action {
+  readonly type = AuthActionTypes.ResetPasswordRequestSuccess;
+
+  constructor() {
+  }
+}
+
 export type AuthActionsUnion
   = GetUser
   | Authenticated
@@ -114,4 +130,6 @@ export type AuthActionsUnion
   | GoogleRegistration
   | FacebookRegistration
   | CredentialsRegistration
-  | RegistrationCompleted;
+  | RegistrationCompleted
+  | ResetPasswordRequest
+  | ResetPasswordRequestSuccess;

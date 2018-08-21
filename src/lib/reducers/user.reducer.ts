@@ -57,7 +57,7 @@ export function userReducer(state: AuthState = defaultState, action: Action): Au
   }
 }
 
-export const getAuthState: MemoizedSelector<AuthState, AuthState> = createFeatureSelector<AuthState>('auth');
+export const getAuthState: MemoizedSelector<object, AuthState> = createFeatureSelector<AuthState>('auth');
 
 export const isAuthLoading = createSelector(
   getAuthState,

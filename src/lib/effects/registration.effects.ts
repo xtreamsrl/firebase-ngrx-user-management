@@ -22,12 +22,13 @@ export class RegistrationEffects {
     ofType(userActions.AuthActionTypes.GoogleRegistration),
     map((action: userActions.GoogleRegistration) => action.payload),
     exhaustMap(payload => {
-      return from(this.doGoogleRegistration());
-    }),
-    map(credential => {
-      return new userActions.RegistrationCompleted();
-    }),
-    catchError(error => of(new userActions.AuthError(error)))
+      return from(this.doGoogleRegistration()).pipe(
+        map(credential => {
+          return new userActions.RegistrationCompleted();
+        }),
+        catchError(error => of(new userActions.AuthError(error)))
+      );
+    })
   );
 
   @Effect()
@@ -35,12 +36,13 @@ export class RegistrationEffects {
     ofType(userActions.AuthActionTypes.FacebookRegistration),
     map((action: userActions.FacebookRegistration) => action.payload),
     exhaustMap(payload => {
-      return from(this.doFacebookRegistration());
-    }),
-    map(credential => {
-      return new userActions.RegistrationCompleted();
-    }),
-    catchError(error => of(new userActions.AuthError(error)))
+      return from(this.doFacebookRegistration()).pipe(
+        map(credential => {
+          return new userActions.RegistrationCompleted();
+        }),
+        catchError(error => of(new userActions.AuthError(error)))
+      );
+    })
   );
 
   @Effect()
@@ -53,13 +55,14 @@ export class RegistrationEffects {
       };
     }),
     exhaustMap(credentials => {
-      return from(this.doSignUpWithCredentials(credentials));
-    }),
-    map(p => {
-      // successful login
-      return new userActions.RegistrationCompleted();
-    }),
-    catchError(error => of(new userActions.AuthError(error)))
+      return from(this.doSignUpWithCredentials(credentials)).pipe(
+        map(p => {
+          // successful login
+          return new userActions.RegistrationCompleted();
+        }),
+        catchError(error => of(new userActions.AuthError(error)))
+      );
+    })
   );
 
   private doFacebookRegistration(): Promise<any> {

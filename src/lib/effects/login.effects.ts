@@ -41,27 +41,29 @@ export class LoginEffects {
     ofType(userActions.AuthActionTypes.GoogleLogin),
     map((action: userActions.GoogleLogin) => action.payload),
     exhaustMap(payload => {
-      return from(this.doGoogleLogin());
-    }),
-    map(credential => {
-      // successful login
-      return new userActions.GetUser();
-    }),
-    catchError(error => of(new userActions.AuthError(error)))
+      return from(this.doGoogleLogin()).pipe(
+        map(credential => {
+          // successful login
+          return new userActions.GetUser();
+        }),
+        catchError(error => of(new userActions.AuthError(error)))
+      );
+    })
   );
 
   @Effect()
-  facebookLogin: Observable<Action> = this.actions.pipe(ofType(userActions.AuthActionTypes.FacebookLogin),
-
+  facebookLogin: Observable<Action> = this.actions.pipe(
+    ofType(userActions.AuthActionTypes.FacebookLogin),
     map((action: userActions.FacebookLogin) => action.payload),
     exhaustMap(payload => {
-      return from(this.doFacebookLogin());
-    }),
-    map(credential => {
-      // successful login
-      return new userActions.GetUser();
-    }),
-    catchError(error => of(new userActions.AuthError(error)))
+      return from(this.doFacebookLogin()).pipe(
+        map(credential => {
+          // successful login
+          return new userActions.GetUser();
+        }),
+        catchError(error => of(new userActions.AuthError(error)))
+      );
+    })
   );
 
   @Effect()
@@ -75,13 +77,14 @@ export class LoginEffects {
       };
     }),
     exhaustMap(credentials => {
-      return from(this.doLoginWithCredentials(credentials));
-    }),
-    map(p => {
-      // successful login
-      return new userActions.GetUser();
-    }),
-    catchError(error => of(new userActions.AuthError(error)))
+      return from(this.doLoginWithCredentials(credentials)).pipe(
+        map(p => {
+          // successful login
+          return new userActions.GetUser();
+        }),
+        catchError(error => of(new userActions.AuthError(error)))
+      );
+    })
   );
 
   @Effect()

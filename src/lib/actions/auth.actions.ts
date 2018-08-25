@@ -3,18 +3,18 @@ import {User} from '../models/auth.model';
 import {Credentials} from '../models/credentials';
 
 export enum AuthActionTypes {
-  GetUser = '[Auth] Get user',
   Authenticated = '[Auth] Authenticated',
-  NotAuthenticated = '[Auth] Not Authenticated',
-  GoogleLogin = '[Auth] Google login attempt',
-  FacebookLogin = '[Auth] Facebook login attempt',
-  CredentialsLogin = '[Auth] Credentials login attempt',
-  GoogleRegistration = '[Auth] Google registration attempt',
-  FacebookRegistration = '[Auth] Facebook registration attempt',
-  CredentialsRegistration = '[Auth] Credentials registration attempt',
-  RegistrationSuccess = '[Auth] Registration Success',
-  Logout = '[Auth] Logout',
   AuthError = '[Auth] Error',
+  CredentialsLogin = '[Auth] Credentials login attempt',
+  CredentialsRegistration = '[Auth] Credentials registration attempt',
+  FacebookLogin = '[Auth] Facebook login attempt',
+  FacebookRegistration = '[Auth] Facebook registration attempt',
+  GetUser = '[Auth] Get user',
+  GoogleLogin = '[Auth] Google login attempt',
+  GoogleRegistration = '[Auth] Google registration attempt',
+  Logout = '[Auth] Logout',
+  NotAuthenticated = '[Auth] Not Authenticated',
+  RegistrationSuccess = '[Auth] Registration Success',
   ResetPasswordRequest = '[Auth] Reset Password Request',
   ResetPasswordRequestSuccess = '[Auth] Reset Password Request Success'
 }

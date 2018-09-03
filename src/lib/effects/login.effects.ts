@@ -7,8 +7,8 @@ import {AngularFireAuth} from 'angularfire2/auth';
 import {catchError, exhaustMap, map} from 'rxjs/operators';
 import * as userActions from '../actions/auth.actions';
 import {from, Observable, of} from 'rxjs';
-import * as firebase from 'firebase';
-
+import * as firebase from 'firebase/app';
+import 'firebase/auth';
 export type Action = userActions.AuthActionsUnion;
 
 @Injectable()

@@ -25,6 +25,7 @@ export class RegistrationEffects {
     exhaustMap(payload => {
       return from(this.doGoogleRegistration()).pipe(
         map(credential => {
+          console.debug('credential', credential);
           return new userActions.RegistrationCompleted();
         }),
         catchError(error => of(new userActions.AuthError(error)))
@@ -39,6 +40,7 @@ export class RegistrationEffects {
     exhaustMap(payload => {
       return from(this.doFacebookRegistration()).pipe(
         map(credential => {
+          console.debug('facebookSignUp', credential);
           return new userActions.RegistrationCompleted();
         }),
         catchError(error => of(new userActions.AuthError(error)))
@@ -59,9 +61,24 @@ export class RegistrationEffects {
       return from(this.doSignUpWithCredentials(credentials)).pipe(
         map(p => {
           // successful login
+          console.debug('doSignUpWithCredentials', p);
           return new userActions.RegistrationCompleted();
         }),
         catchError(error => of(new userActions.AuthError(error)))
+      );
+    })
+  );
+
+  @Effect()
+  sendVerificationEmail$: Observable<Action> = this.actions.pipe(
+    ofType(userActions.AuthActionTypes.SendVerificationEmail),
+    map(() => this.afAuth.auth.currentUser),
+    exhaustMap(user => {
+      return from(user.sendEmailVerification()).pipe(
+        map(p => {
+          return new userActions.VerificationEmailSent();
+        }),
+        catchError(error => of(new userActions.VerificationEmailError(error)))
       );
     })
   );

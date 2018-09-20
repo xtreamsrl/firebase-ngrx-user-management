@@ -14,9 +14,12 @@ export enum AuthActionTypes {
   GoogleRegistration = '[Auth] Google registration attempt',
   Logout = '[Auth] Logout',
   NotAuthenticated = '[Auth] Not Authenticated',
+  SendVerificationEmail = '[Auth] Send Verificaiton Email',
   RegistrationSuccess = '[Auth] Registration Success',
   ResetPasswordRequest = '[Auth] Reset Password Request',
-  ResetPasswordRequestSuccess = '[Auth] Reset Password Request Success'
+  ResetPasswordRequestSuccess = '[Auth] Reset Password Request Success',
+  VerificationEmailError = '[Auth] Verification Email Error',
+  VerificationEmailSent = '[Auth] Verification Email Sent'
 }
 
 export class GetUser implements Action {
@@ -118,6 +121,27 @@ export class ResetPasswordRequestSuccess implements Action {
   }
 }
 
+export class SendVerificationEmail implements Action {
+  readonly type = AuthActionTypes.SendVerificationEmail;
+
+  constructor() {
+  }
+}
+
+export class VerificationEmailError implements Action {
+  readonly type = AuthActionTypes.VerificationEmailError;
+
+  constructor(public payload: { code: string, message: string }) {
+  }
+}
+
+export class VerificationEmailSent implements Action {
+  readonly type = AuthActionTypes.VerificationEmailSent;
+
+  constructor() {
+  }
+}
+
 export type AuthActionsUnion
   = GetUser
   | Authenticated
@@ -132,4 +156,7 @@ export type AuthActionsUnion
   | CredentialsRegistration
   | RegistrationCompleted
   | ResetPasswordRequest
-  | ResetPasswordRequestSuccess;
+  | ResetPasswordRequestSuccess
+  | SendVerificationEmail
+  | VerificationEmailSent
+  | VerificationEmailError;

@@ -66,7 +66,7 @@ export const isAuthLoading = createSelector(
 
 export const isUserLogged = createSelector(
   getAuthState,
-  state => state.loggedIn
+  state => state.loggedIn && state.user.emailVerified
 );
 
 export const getUser = createSelector(

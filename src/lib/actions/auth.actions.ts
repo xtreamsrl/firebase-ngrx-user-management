@@ -72,7 +72,7 @@ export class CredentialsRegistration implements Action {
   }
 }
 
-export class RegistrationCompleted implements Action {
+export class RegistrationSuccess implements Action {
   readonly type = AuthActionTypes.RegistrationSuccess;
 
   constructor(public payload?: any) {
@@ -124,7 +124,7 @@ export class ResetPasswordRequestSuccess implements Action {
 export class SendVerificationEmail implements Action {
   readonly type = AuthActionTypes.SendVerificationEmail;
 
-  constructor() {
+  constructor(public payload: { redirectUrl: string }) {
   }
 }
 
@@ -154,7 +154,7 @@ export type AuthActionsUnion
   | GoogleRegistration
   | FacebookRegistration
   | CredentialsRegistration
-  | RegistrationCompleted
+  | RegistrationSuccess
   | ResetPasswordRequest
   | ResetPasswordRequestSuccess
   | SendVerificationEmail

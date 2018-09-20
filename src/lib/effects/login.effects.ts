@@ -4,11 +4,12 @@ import {User} from '../models/auth.model';
 
 import {AngularFireAuth} from 'angularfire2/auth';
 
-import {catchError, exhaustMap, map} from 'rxjs/operators';
+import {catchError, exhaustMap, map, switchMap, take} from 'rxjs/operators';
 import * as userActions from '../actions/auth.actions';
 import {from, Observable, of} from 'rxjs';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
+
 export type Action = userActions.AuthActionsUnion;
 
 @Injectable()
@@ -19,22 +20,29 @@ export class LoginEffects {
   }
 
   @Effect()
-  getUser: Observable<Action> = this.actions.pipe(ofType<userActions.GetUser>(userActions.AuthActionTypes.GetUser),
+  getUser: Observable<Action> = this.actions.pipe(
+    ofType<userActions.GetUser>(userActions.AuthActionTypes.GetUser),
     map((action: userActions.GetUser) => action.payload),
-    exhaustMap(payload => this.afAuth.authState),
-    map(authData => {
-      console.debug(authData);
-      if (authData) {
-        /// User logged in
-        console.debug('USER', authData);
-        const user = new User(authData.uid, authData.displayName, authData.email, authData.photoURL, authData.emailVerified);
-        return new userActions.Authenticated(user);
-      } else {
-        /// User not logged in
-        return new userActions.NotAuthenticated();
-      }
-
-    }));
+    exhaustMap(payload => this.afAuth.authState.pipe(
+      take(1),
+      switchMap(authData => {
+        console.debug(authData);
+        if (authData) {
+          /// User logged in
+          console.debug('USER', authData);
+          return from(authData.getIdToken(true)).pipe(
+            map(() => {
+              const user = new User(authData.uid, authData.displayName, authData.email, authData.photoURL, authData.emailVerified);
+              return new userActions.Authenticated(user);
+            })
+          );
+        } else {
+          return of(new userActions.NotAuthenticated());
+        }
+      }))
+    )
+  )
+  ;
 
   @Effect()
   googleLogin: Observable<Action> = this.actions.pipe(

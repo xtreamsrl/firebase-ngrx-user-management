@@ -1,15 +1,15 @@
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@ngrx/effects';
-import {User} from '../models/auth.model';
 
 import {AngularFireAuth} from 'angularfire2/auth';
 
-import {catchError, exhaustMap, map, mergeMap} from 'rxjs/operators';
+import {catchError, exhaustMap, map} from 'rxjs/operators';
 import * as userActions from '../actions/auth.actions';
-import {from, Observable} from 'rxjs';
-import * as firebase from 'firebase';
+import {from, Observable, of} from 'rxjs';
+import * as firebase from 'firebase/app';
+import 'firebase/auth';
 
-export type Action = userActions.All;
+export type Action = userActions.AuthActionsUnion;
 
 @Injectable()
 export class RegistrationEffects {
@@ -20,29 +20,37 @@ export class RegistrationEffects {
 
   @Effect()
   googleSignUp: Observable<Action> = this.actions.pipe(
-    ofType(userActions.AuthActionTypes.GOOGLE_REGISTRATION),
+    ofType(userActions.AuthActionTypes.GoogleRegistration),
     map((action: userActions.GoogleRegistration) => action.payload),
     exhaustMap(payload => {
-      return from(this.doGoogleRegistration());
-    }),
-    map(credential => {
-      return new userActions.RegistrationCompleted();
-    }));
+      return from(this.doGoogleRegistration()).pipe(
+        map(credential => {
+          console.debug('credential', credential);
+          return new userActions.RegistrationSuccess();
+        }),
+        catchError(error => of(new userActions.AuthError(error)))
+      );
+    })
+  );
 
   @Effect()
   facebookSignUp: Observable<Action> = this.actions.pipe(
-    ofType(userActions.AuthActionTypes.FACEBOOK_REGISTRATION),
+    ofType(userActions.AuthActionTypes.FacebookRegistration),
     map((action: userActions.FacebookRegistration) => action.payload),
     exhaustMap(payload => {
-      return from(this.doFacebookRegistration());
-    }),
-    map(credential => {
-      return new userActions.RegistrationCompleted();
-    }));
+      return from(this.doFacebookRegistration()).pipe(
+        map(credential => {
+          console.debug('facebookSignUp', credential);
+          return new userActions.RegistrationSuccess();
+        }),
+        catchError(error => of(new userActions.AuthError(error)))
+      );
+    })
+  );
 
   @Effect()
   signUpWithCredentials: Observable<Action> = this.actions.pipe(
-    ofType(userActions.AuthActionTypes.CREDENTIALS_REGISTRATION),
+    ofType(userActions.AuthActionTypes.CredentialsRegistration),
     map((action: userActions.CredentialsRegistration) => {
       return {
         email: action.payload.email,
@@ -50,11 +58,27 @@ export class RegistrationEffects {
       };
     }),
     exhaustMap(credentials => {
-      return from(this.doSignUpWithCredentials(credentials));
-    }),
-    map(p => {
-      // successful login
-      return new userActions.RegistrationCompleted();
+      return from(this.doSignUpWithCredentials(credentials)).pipe(
+        map(p => {
+          console.debug('doSignUpWithCredentials', p);
+          return new userActions.RegistrationSuccess();
+        }),
+        catchError(error => of(new userActions.AuthError(error)))
+      );
+    })
+  );
+
+  @Effect()
+  sendVerificationEmail$: Observable<Action> = this.actions.pipe(
+    ofType<userActions.SendVerificationEmail>(userActions.AuthActionTypes.SendVerificationEmail),
+    map(action => action.payload),
+    exhaustMap(payload => {
+      return from(this.afAuth.auth.currentUser.sendEmailVerification({url: payload.redirectUrl})).pipe(
+        map(p => {
+          return new userActions.VerificationEmailSent();
+        }),
+        catchError(error => of(new userActions.VerificationEmailError(error)))
+      );
     })
   );
 

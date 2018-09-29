@@ -7,6 +7,7 @@ import {userReducer} from './reducers/user.reducer';
 import {LoginEffects} from './effects/login.effects';
 import {AngularFireModule} from 'angularfire2';
 import {RegistrationEffects} from './effects/registration.effects';
+import {ReauthenticationEffects} from './effects/reauthentication.effects';
 
 @NgModule({
   imports: [
@@ -14,6 +15,7 @@ import {RegistrationEffects} from './effects/registration.effects';
     AngularFireAuthModule,
     EffectsModule.forFeature([
       LoginEffects,
+      ReauthenticationEffects,
       RegistrationEffects
     ]),
 

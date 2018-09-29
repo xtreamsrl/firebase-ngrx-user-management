@@ -3,12 +3,11 @@
  */
 
 import {IUser, User} from './lib/models/auth.model';
+import {AuthState, getAuthState, getError, getUser, isAuthLoading, isStatusSuccess, isUserLogged} from './lib/reducers/user.reducer';
+import {Credentials} from './lib/models/credentials';
 
 export * from './lib/firebase-ngrx-user-management.service';
 export * from './lib/firebase-ngrx-user-management.module';
 export * from './lib/actions/auth.actions';
 
-import {AuthState} from './lib/reducers/user.reducer';
-import {Credentials} from './lib/models/credentials';
-
-export {AuthState, Credentials, IUser, User};
+export {AuthState, Credentials, IUser, User, getAuthState, isAuthLoading, isUserLogged, getUser, getError, isStatusSuccess};

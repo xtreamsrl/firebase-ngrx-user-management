@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {InjectionToken, ModuleWithProviders, NgModule} from '@angular/core';
 import {EffectsModule} from '@ngrx/effects';
 import {StoreModule} from '@ngrx/store';
 
@@ -22,7 +22,9 @@ import {ReauthenticationEffects} from './effects/reauthentication.effects';
     StoreModule.forFeature('auth', userReducer)
   ],
   declarations: [],
-  exports: []
+  exports: [],
+  providers: []
 })
 export class FirebaseNgrxUserManagementModule {
+
 }

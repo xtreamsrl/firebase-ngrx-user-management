@@ -4,7 +4,7 @@ import {createFeatureSelector, createSelector, MemoizedSelector} from '@ngrx/sto
 
 export type Action = userActions.AuthActionsUnion;
 
-export interface AuthState {
+export interface State {
   loggedIn: boolean;
   user: User | null;
   loading: boolean;
@@ -23,7 +23,7 @@ const defaultState = {
 };
 
 /// Reducer function
-export function userReducer(state: AuthState = defaultState, action: Action): AuthState {
+export function reducer(state: State = defaultState, action: Action): State {
   switch (action.type) {
 
     case userActions.AuthActionTypes.GetUser:
@@ -42,18 +42,18 @@ export function userReducer(state: AuthState = defaultState, action: Action): Au
     case userActions.AuthActionTypes.CredentialsLogin:
     case userActions.AuthActionTypes.CredentialsRegistration:
     case userActions.AuthActionTypes.ResetPasswordRequest:
-    case userActions.AuthActionTypes.FacebookReauthentication:
-    case userActions.AuthActionTypes.CredentialsReauthentication:
-    case userActions.AuthActionTypes.GoogleReauthentication:
+    case userActions.AuthActionTypes.FacebookReAuthentication:
+    case userActions.AuthActionTypes.CredentialsReAuthentication:
+    case userActions.AuthActionTypes.GoogleReAuthentication:
       return {...state, loading: true, success: false};
 
     case userActions.AuthActionTypes.ResetPasswordRequestSuccess:
       return {...state, loading: false, success: true};
 
     case userActions.AuthActionTypes.AuthError:
-    case userActions.AuthActionTypes.ReauthenticationError:
+    case userActions.AuthActionTypes.ReAuthenticationError:
       return {...state, loading: false, success: false};
-    case userActions.AuthActionTypes.ReauthenticationSuccess:
+    case userActions.AuthActionTypes.ReAuthenticationSuccess:
       return {...state, loading: false, error: null, success: true};
     case userActions.AuthActionTypes.Logout:
       return {...state, loading: true};
@@ -69,30 +69,3 @@ export function userReducer(state: AuthState = defaultState, action: Action): Au
       return state;
   }
 }
-
-export const getAuthState: MemoizedSelector<object, AuthState> = createFeatureSelector<AuthState>('auth');
-
-export const isAuthLoading = createSelector(
-  getAuthState,
-  state => state.loading
-);
-
-export const isUserLogged = createSelector(
-  getAuthState,
-  state => state.loggedIn && state.user.emailVerified
-);
-
-export const getUser = createSelector(
-  getAuthState,
-  state => state.user
-);
-
-export const getError = createSelector(
-  getAuthState,
-  state => state.error
-);
-
-export const isStatusSuccess = createSelector(
-  getAuthState,
-  state => state.success
-);

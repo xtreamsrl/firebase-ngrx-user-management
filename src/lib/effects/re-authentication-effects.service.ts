@@ -13,73 +13,73 @@ import 'firebase/auth';
 export type Action = userActions.AuthActionsUnion;
 
 @Injectable()
-export class ReauthenticationEffects {
+export class ReAuthenticationEffects {
 
   constructor(private actions: Actions,
               private afAuth: AngularFireAuth) {
   }
 
   @Effect()
-  googleReauthentication: Observable<Action> = this.actions.pipe(
-    ofType(userActions.AuthActionTypes.GoogleReauthentication),
-    map((action: userActions.GoogleReauthentication) => action.payload),
+  googleReAuthentication: Observable<Action> = this.actions.pipe(
+    ofType(userActions.AuthActionTypes.GoogleReAuthentication),
+    map((action: userActions.GoogleReAuthentication) => action.payload),
     exhaustMap(payload => {
-      return from(this.doGoogleReauthentication()).pipe(
+      return from(this.doGoogleReAuthentication()).pipe(
         map(credential => {
           // successful login
-          return new userActions.ReauthenticationSuccess();
+          return new userActions.ReAuthenticationSuccess();
         }),
-        catchError(error => of(new userActions.ReauthenticationError(error)))
+        catchError(error => of(new userActions.ReAuthenticationError(error)))
       );
     })
   );
 
   @Effect()
-  facebookReauthentication: Observable<Action> = this.actions.pipe(
-    ofType(userActions.AuthActionTypes.FacebookReauthentication),
-    map((action: userActions.FacebookReauthentication) => action.payload),
+  facebookReAuthentication: Observable<Action> = this.actions.pipe(
+    ofType(userActions.AuthActionTypes.FacebookReAuthentication),
+    map((action: userActions.FacebookReAuthentication) => action.payload),
     exhaustMap(payload => {
-      return from(this.doFacebookReauthentication()).pipe(
+      return from(this.doFacebookReAuthentication()).pipe(
         map(credential => {
           // successful login
-          return new userActions.ReauthenticationSuccess();
+          return new userActions.ReAuthenticationSuccess();
         }),
-        catchError(error => of(new userActions.ReauthenticationError(error)))
+        catchError(error => of(new userActions.ReAuthenticationError(error)))
       );
     })
   );
 
   @Effect()
-  reauthenticateWithCredentials: Observable<Action> = this.actions.pipe(
-    ofType(userActions.AuthActionTypes.CredentialsReauthentication),
-    map((action: userActions.CredentialsReauthentication) => {
+  reAuthenticateWithCredentials: Observable<Action> = this.actions.pipe(
+    ofType(userActions.AuthActionTypes.CredentialsReAuthentication),
+    map((action: userActions.CredentialsReAuthentication) => {
       return {
         email: action.email,
         password: action.password
       };
     }),
     exhaustMap(credentials => {
-      return from(this.doReauthenticationWithCredentials(credentials)).pipe(
+      return from(this.doReAuthenticationWithCredentials(credentials)).pipe(
         map(p => {
           // successful login
-          return new userActions.ReauthenticationSuccess();
+          return new userActions.ReAuthenticationSuccess();
         }),
-        catchError(error => of(new userActions.ReauthenticationError(error)))
+        catchError(error => of(new userActions.ReAuthenticationError(error)))
       );
     })
   );
 
-  private doFacebookReauthentication(): Promise<any> {
+  private doFacebookReAuthentication(): Promise<any> {
     const provider = new firebase.auth.FacebookAuthProvider();
     return this.afAuth.auth.currentUser.reauthenticateWithPopup(provider);
   }
 
-  private doGoogleReauthentication(): Promise<any> {
+  private doGoogleReAuthentication(): Promise<any> {
     const provider = new firebase.auth.GoogleAuthProvider();
     return this.afAuth.auth.currentUser.reauthenticateWithPopup(provider);
   }
 
-  private doReauthenticationWithCredentials(credentials: { email: string, password: string}): Promise<any> {
+  private doReAuthenticationWithCredentials(credentials: { email: string, password: string}): Promise<any> {
     const credential = firebase.auth.EmailAuthProvider.credential(
       credentials.email,
       credentials.password

@@ -4,9 +4,9 @@ import {User} from '../models/auth.model';
 
 import {AngularFireAuth} from 'angularfire2/auth';
 
-import {catchError, exhaustMap, map, switchMap, take} from 'rxjs/operators';
+import {catchError, exhaustMap, map, switchMap, take, withLatestFrom} from 'rxjs/operators';
 import * as userActions from '../actions/auth.actions';
-import {from, Observable, of} from 'rxjs';
+import {from, Observable, of, zip} from 'rxjs';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 
@@ -30,9 +30,20 @@ export class LoginEffects {
         if (authData) {
           /// User logged in
           console.debug('USER', authData);
-          return from(authData.getIdToken(true)).pipe(
-            map(() => {
-              const user = new User(authData.uid, authData.displayName, authData.email, authData.photoURL, authData.emailVerified);
+          return zip(from(authData.getIdToken(true)), from(this.afAuth.auth.fetchSignInMethodsForEmail(this.afAuth.auth.currentUser.email))).pipe(
+            map(([res, providers]) => {
+              console.debug('providers found', providers);
+              const providersMap = {};
+              if (providers.indexOf('facebook.com') > -1) {
+                providersMap['facebook'] = true;
+              }
+              if (providers.indexOf('google.com') > -1) {
+                providersMap['google'] = true;
+              }
+              if (providers.indexOf('password') > -1) {
+                providersMap['password'] = true;
+              }
+              const user = new User(authData.uid, authData.displayName, authData.email, providersMap, authData.photoURL, authData.emailVerified);
               return new userActions.Authenticated(user);
             })
           );

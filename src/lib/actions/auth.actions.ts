@@ -5,29 +5,36 @@ import {Credentials} from '../models/credentials';
 export enum AuthActionTypes {
   Authenticated = '[Auth] Authenticated',
   AuthError = '[Auth] Error',
-  CredentialsLogin = '[Auth] Credentials login attempt',
-  CredentialsReauthentication = '[Auth] Credentials reauthentication attempt',
-  CredentialsRegistration = '[Auth] Credentials registration attempt',
-  DeleteAccount = '[Auth] Delete account',
-  DeleteAccountSuccess = '[Auth] Delete account success',
-  DeleteAccountError = '[Auth] Delete account error',
-  FacebookLogin = '[Auth] Facebook login attempt',
-  FacebookReauthentication = '[Auth] Facebook reauthentication attempt',
-  FacebookRegistration = '[Auth] Facebook registration attempt',
-  GetUser = '[Auth] Get user',
-  GoogleLogin = '[Auth] Google login attempt',
-  GoogleReauthentication = '[Auth] Google reauthentication attempt',
-  GoogleRegistration = '[Auth] Google registration attempt',
+  CredentialsLogin = '[Auth] Credentials Login Attempt',
+  CredentialsReAuthentication = '[Auth] Credentials ReAuthentication attempt',
+  CredentialsRegistration = '[Auth] Credentials Registration Attempt',
+
+  DeleteAccount = '[Auth] Delete Account',
+  DeleteAccountSuccess = '[Auth] Delete Account Success',
+  DeleteAccountError = '[Auth] Delete Account Error',
+  FacebookLogin = '[Auth] Facebook Login Attempt',
+  FacebookReAuthentication = '[Auth] Facebook ReAuthentication Attempt',
+  FacebookRegistration = '[Auth] Facebook Registration Attempt',
+  GetUser = '[Auth] Get User',
+  GoogleLogin = '[Auth] Google Login Attempt',
+  GoogleReAuthentication = '[Auth] Google ReAuthentication Attempt',
+  GoogleRegistration = '[Auth] Google Registration Attempt',
   Logout = '[Auth] Logout',
+  LinkCredentialAccount = '[Auth] Link Credential Account',
+  LinkFacebookAccount = '[Auth] Link Facebook Account',
+  LinkGoogleAccount = '[Auth] Link Google Account',
+  LinkError = '[Auth] Link Error',
+  LinkSuccess = '[Auth] Link Success',
   NotAuthenticated = '[Auth] Not Authenticated',
-  SendVerificationEmail = '[Auth] Send Verificaiton Email',
-  ReauthenticationError = '[Auth] Reauthentication error',
-  ReauthenticationSuccess = '[Auth] Reauthentication success',
+  SendVerificationEmail = '[Auth] Send Verification Email',
+  ReAuthenticationError = '[Auth] ReAuthentication Error',
+  ReAuthenticationSuccess = '[Auth] ReAuthentication Success',
   RegistrationSuccess = '[Auth] Registration Success',
   ResetPasswordRequest = '[Auth] Reset Password Request',
   ResetPasswordRequestSuccess = '[Auth] Reset Password Request Success',
   VerificationEmailError = '[Auth] Verification Email Error',
-  VerificationEmailSent = '[Auth] Verification Email Sent'
+  VerificationEmailSent = '[Auth] Verification Email Sent',
+  VerifyPhoneNumber = '[Auth] Verify Phone'
 }
 
 export class GetUser implements Action {
@@ -115,36 +122,36 @@ export class CredentialsLogin implements Action {
   }
 }
 
-export class GoogleReauthentication implements Action {
-  readonly type = AuthActionTypes.GoogleReauthentication;
+export class GoogleReAuthentication implements Action {
+  readonly type = AuthActionTypes.GoogleReAuthentication;
 
   constructor(public payload?: any) {
   }
 }
 
-export class FacebookReauthentication implements Action {
-  readonly type = AuthActionTypes.FacebookReauthentication;
+export class FacebookReAuthentication implements Action {
+  readonly type = AuthActionTypes.FacebookReAuthentication;
 
   constructor(public payload?: any) {
   }
 }
 
-export class CredentialsReauthentication implements Action {
-  readonly type = AuthActionTypes.CredentialsReauthentication;
+export class CredentialsReAuthentication implements Action {
+  readonly type = AuthActionTypes.CredentialsReAuthentication;
 
   constructor(public email: string, public password: string, public remember?: boolean) {
   }
 }
 
-export class ReauthenticationSuccess implements Action {
-  readonly type = AuthActionTypes.ReauthenticationSuccess;
+export class ReAuthenticationSuccess implements Action {
+  readonly type = AuthActionTypes.ReAuthenticationSuccess;
 
   constructor() {
   }
 }
 
-export class ReauthenticationError implements Action {
-  readonly type = AuthActionTypes.ReauthenticationError;
+export class ReAuthenticationError implements Action {
+  readonly type = AuthActionTypes.ReAuthenticationError;
 
   constructor(public payload?: any) {
   }
@@ -208,15 +215,63 @@ export class DeleteAccountError implements Action {
 
 }
 
+export class LinkCredentialAccount implements Action {
+  readonly type = AuthActionTypes.LinkCredentialAccount;
+
+  constructor(public payload: { password: string }) {
+  }
+
+}
+
+export class LinkFacebookAccount implements Action {
+  readonly type = AuthActionTypes.LinkFacebookAccount;
+
+  constructor() {
+  }
+
+}
+
+export class LinkGoogleAccount implements Action {
+  readonly type = AuthActionTypes.LinkGoogleAccount;
+
+  constructor() {
+  }
+
+}
+
+export class VerifyPhoneNumber implements Action {
+  readonly type = AuthActionTypes.VerifyPhoneNumber;
+
+  constructor() {
+  }
+
+}
+
+export class LinkSuccess implements Action {
+  readonly type = AuthActionTypes.LinkSuccess;
+
+  constructor() {
+  }
+
+}
+
+export class LinkError implements Action {
+  readonly type = AuthActionTypes.LinkError;
+
+  constructor(public payload: { code: string, message: string }) {
+  }
+
+}
+
 export type AuthActionsUnion
   = GetUser
   | Authenticated
   | NotAuthenticated
-  | ReauthenticationSuccess
-  | ReauthenticationError
-  | GoogleReauthentication
-  | FacebookReauthentication
-  | CredentialsReauthentication
+  | ReAuthenticationSuccess
+  | ReAuthenticationError
+  | GoogleReAuthentication
+  | FacebookReAuthentication
+  | CredentialsReAuthentication
   | GoogleLogin
   | FacebookLogin
   | CredentialsLogin
@@ -233,4 +288,10 @@ export type AuthActionsUnion
   | VerificationEmailError
   | DeleteAccount
   | DeleteAccountError
-  | DeleteAccountSuccess;
+  | DeleteAccountSuccess
+  | LinkCredentialAccount
+  | LinkFacebookAccount
+  | LinkGoogleAccount
+  | VerifyPhoneNumber
+  | LinkError
+  | LinkSuccess;

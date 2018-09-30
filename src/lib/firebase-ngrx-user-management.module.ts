@@ -1,13 +1,15 @@
-import {InjectionToken, ModuleWithProviders, NgModule} from '@angular/core';
+import {NgModule} from '@angular/core';
 import {EffectsModule} from '@ngrx/effects';
 import {StoreModule} from '@ngrx/store';
 
 import {AngularFireAuthModule} from 'angularfire2/auth';
-import {userReducer} from './reducers/user.reducer';
+import {reducers} from './reducers/index';
 import {LoginEffects} from './effects/login.effects';
 import {AngularFireModule} from 'angularfire2';
 import {RegistrationEffects} from './effects/registration.effects';
-import {ReauthenticationEffects} from './effects/reauthentication.effects';
+import {ReAuthenticationEffects} from './effects/re-authentication-effects.service';
+import {ProvidersManagementEffects} from './effects/providers-management.effects';
+import {PasswordManagementEffects} from './effects/password-management.effects';
 
 @NgModule({
   imports: [
@@ -15,11 +17,13 @@ import {ReauthenticationEffects} from './effects/reauthentication.effects';
     AngularFireAuthModule,
     EffectsModule.forFeature([
       LoginEffects,
-      ReauthenticationEffects,
-      RegistrationEffects
+      ReAuthenticationEffects,
+      RegistrationEffects,
+      ProvidersManagementEffects,
+      PasswordManagementEffects
     ]),
 
-    StoreModule.forFeature('auth', userReducer)
+    StoreModule.forFeature('auth', reducers)
   ],
   declarations: [],
   exports: [],

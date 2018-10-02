@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@ngrx/effects';
 
-import {AngularFireAuth} from 'angularfire2/auth';
+import {AngularFireAuth} from '@angular/fire/auth';
 
 import {catchError, exhaustMap, map} from 'rxjs/operators';
 import * as userActions from '../actions/auth.actions';

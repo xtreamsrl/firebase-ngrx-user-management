@@ -3,10 +3,24 @@
  */
 
 import {IUser, User} from './lib/models/auth.model';
-import {AuthState, getAuthError, getAuthState, getChangePasswordStatus, getUser, getUserState, isAuthLoading, isAuthSuccess, isUserLogged} from './lib/reducers/index';
+import {
+  AuthState,
+  getAuthError,
+  getAuthState,
+  getChangePasswordStatus,
+  getProvidersRequestStatus,
+  getUser,
+  getUserProviders,
+  getUserProvidersState,
+  getUserState,
+  isAuthLoading,
+  isAuthSuccess,
+  isUserLogged
+} from './lib/reducers/index';
 import {Credentials} from './lib/models/credentials';
-import * as PasswordManagementActions from './lib/actions/password-management.actions';
+import {PasswordManagementActions, ProvidersManagementActions} from './lib/actions/index';
 import {State as UserState} from './lib/reducers/user.reducer';
+import {State as ProvidersState} from './lib/reducers/providers-management.reducer';
 
 export * from './lib/firebase-ngrx-user-management.service';
 export * from './lib/firebase-ngrx-user-management.module';
@@ -20,11 +34,16 @@ export {
   getAuthState,
   isAuthLoading,
   PasswordManagementActions,
+  ProvidersManagementActions,
   UserState,
   getChangePasswordStatus,
   isUserLogged,
   getUser,
   getAuthError,
   isAuthSuccess,
-  getUserState
+  getUserState,
+  getUserProvidersState,
+  getUserProviders,
+  getProvidersRequestStatus,
+  ProvidersState
 };

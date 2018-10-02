@@ -2,10 +2,10 @@ import {NgModule} from '@angular/core';
 import {EffectsModule} from '@ngrx/effects';
 import {StoreModule} from '@ngrx/store';
 
-import {AngularFireAuthModule} from 'angularfire2/auth';
+import {AngularFireAuthModule} from '@angular/fire/auth';
 import {reducers} from './reducers/index';
 import {LoginEffects} from './effects/login.effects';
-import {AngularFireModule} from 'angularfire2';
+import {AngularFireModule} from '@angular/fire';
 import {RegistrationEffects} from './effects/registration.effects';
 import {ReAuthenticationEffects} from './effects/re-authentication-effects.service';
 import {ProvidersManagementEffects} from './effects/providers-management.effects';

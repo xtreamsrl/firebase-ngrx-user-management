@@ -1,8 +1,9 @@
 import * as userActions from '../actions/auth.actions';
+import {ProvidersManagementActions} from '../actions';
 import {User} from '../models/auth.model';
-import {createFeatureSelector, createSelector, MemoizedSelector} from '@ngrx/store';
 
-export type Action = userActions.AuthActionsUnion;
+export type Action = userActions.AuthActionsUnion |
+  ProvidersManagementActions.ProvidersManagementActionsUnion;
 
 export interface State {
   loggedIn: boolean;

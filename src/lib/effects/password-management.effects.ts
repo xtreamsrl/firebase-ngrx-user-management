@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@ngrx/effects';
-import {AngularFireAuth} from 'angularfire2/auth';
+import {AngularFireAuth} from '@angular/fire/auth';
 import {from, Observable, of} from 'rxjs';
 import {Action, select} from '@ngrx/store';
 import * as firebase from 'firebase/app';

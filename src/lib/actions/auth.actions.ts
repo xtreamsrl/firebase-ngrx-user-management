@@ -8,7 +8,6 @@ export enum AuthActionTypes {
   CredentialsLogin = '[Auth] Credentials Login Attempt',
   CredentialsReAuthentication = '[Auth] Credentials ReAuthentication attempt',
   CredentialsRegistration = '[Auth] Credentials Registration Attempt',
-
   DeleteAccount = '[Auth] Delete Account',
   DeleteAccountSuccess = '[Auth] Delete Account Success',
   DeleteAccountError = '[Auth] Delete Account Error',
@@ -20,11 +19,6 @@ export enum AuthActionTypes {
   GoogleReAuthentication = '[Auth] Google ReAuthentication Attempt',
   GoogleRegistration = '[Auth] Google Registration Attempt',
   Logout = '[Auth] Logout',
-  LinkCredentialAccount = '[Auth] Link Credential Account',
-  LinkFacebookAccount = '[Auth] Link Facebook Account',
-  LinkGoogleAccount = '[Auth] Link Google Account',
-  LinkError = '[Auth] Link Error',
-  LinkSuccess = '[Auth] Link Success',
   NotAuthenticated = '[Auth] Not Authenticated',
   SendVerificationEmail = '[Auth] Send Verification Email',
   ReAuthenticationError = '[Auth] ReAuthentication Error',
@@ -33,8 +27,7 @@ export enum AuthActionTypes {
   ResetPasswordRequest = '[Auth] Reset Password Request',
   ResetPasswordRequestSuccess = '[Auth] Reset Password Request Success',
   VerificationEmailError = '[Auth] Verification Email Error',
-  VerificationEmailSent = '[Auth] Verification Email Sent',
-  VerifyPhoneNumber = '[Auth] Verify Phone'
+  VerificationEmailSent = '[Auth] Verification Email Sent'
 }
 
 export class GetUser implements Action {
@@ -215,54 +208,6 @@ export class DeleteAccountError implements Action {
 
 }
 
-export class LinkCredentialAccount implements Action {
-  readonly type = AuthActionTypes.LinkCredentialAccount;
-
-  constructor(public payload: { password: string }) {
-  }
-
-}
-
-export class LinkFacebookAccount implements Action {
-  readonly type = AuthActionTypes.LinkFacebookAccount;
-
-  constructor() {
-  }
-
-}
-
-export class LinkGoogleAccount implements Action {
-  readonly type = AuthActionTypes.LinkGoogleAccount;
-
-  constructor() {
-  }
-
-}
-
-export class VerifyPhoneNumber implements Action {
-  readonly type = AuthActionTypes.VerifyPhoneNumber;
-
-  constructor() {
-  }
-
-}
-
-export class LinkSuccess implements Action {
-  readonly type = AuthActionTypes.LinkSuccess;
-
-  constructor() {
-  }
-
-}
-
-export class LinkError implements Action {
-  readonly type = AuthActionTypes.LinkError;
-
-  constructor(public payload: { code: string, message: string }) {
-  }
-
-}
-
 export type AuthActionsUnion
   = GetUser
   | Authenticated
@@ -288,10 +233,4 @@ export type AuthActionsUnion
   | VerificationEmailError
   | DeleteAccount
   | DeleteAccountError
-  | DeleteAccountSuccess
-  | LinkCredentialAccount
-  | LinkFacebookAccount
-  | LinkGoogleAccount
-  | VerifyPhoneNumber
-  | LinkError
-  | LinkSuccess;
+  | DeleteAccountSuccess;

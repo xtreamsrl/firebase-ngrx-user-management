@@ -2,22 +2,24 @@ import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import {User} from '../models/auth.model';
 
-import {AngularFireAuth} from 'angularfire2/auth';
+import {AngularFireAuth} from '@angular/fire/auth';
 
-import {catchError, exhaustMap, map, switchMap, take, withLatestFrom} from 'rxjs/operators';
+import {catchError, exhaustMap, map, switchMap, take} from 'rxjs/operators';
 import * as userActions from '../actions/auth.actions';
 import {from, Observable, of, zip} from 'rxjs';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
+import {SetProviders} from '../actions/providers-management.actions';
+import {Action} from '@ngrx/store';
 
-export type Action = userActions.AuthActionsUnion;
+const PROVIDERS_MAP = {};
+PROVIDERS_MAP[firebase.auth.FacebookAuthProvider.FACEBOOK_SIGN_IN_METHOD] = 'facebook';
+PROVIDERS_MAP[firebase.auth.GoogleAuthProvider.GOOGLE_SIGN_IN_METHOD] = 'google';
+PROVIDERS_MAP[firebase.auth.EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD] = 'password';
+PROVIDERS_MAP[firebase.auth.PhoneAuthProvider.PHONE_SIGN_IN_METHOD] = 'phone';
 
 @Injectable()
 export class LoginEffects {
-
-  constructor(private actions: Actions,
-              private afAuth: AngularFireAuth) {
-  }
 
   @Effect()
   getUser: Observable<Action> = this.actions.pipe(
@@ -30,21 +32,19 @@ export class LoginEffects {
         if (authData) {
           /// User logged in
           console.debug('USER', authData);
-          return zip(from(authData.getIdToken(true)), from(this.afAuth.auth.fetchSignInMethodsForEmail(this.afAuth.auth.currentUser.email))).pipe(
-            map(([res, providers]) => {
-              console.debug('providers found', providers);
-              const providersMap = {};
-              if (providers.indexOf('facebook.com') > -1) {
-                providersMap['facebook'] = true;
-              }
-              if (providers.indexOf('google.com') > -1) {
-                providersMap['google'] = true;
-              }
-              if (providers.indexOf('password') > -1) {
-                providersMap['password'] = true;
-              }
-              const user = new User(authData.uid, authData.displayName, authData.email, providersMap, authData.photoURL, authData.emailVerified);
-              return new userActions.Authenticated(user);
+          return zip(from(authData.getIdToken(true))).pipe(
+            switchMap(res => {
+              console.debug('providers found', authData.providerData);
+              const providers = authData.providerData.reduce((prev, current) => {
+                const key = PROVIDERS_MAP[current.providerId];
+                if (key) {
+                  prev[key] = true;
+                }
+                return prev;
+              }, {});
+              console.debug(providers, authData.providerData.map(p => p.providerId));
+              const user = new User(authData.uid, authData.displayName, authData.email, authData.phoneNumber, authData.photoURL, authData.emailVerified);
+              return from([new SetProviders(providers), new userActions.Authenticated(user)]);
             })
           );
         } else {
@@ -130,6 +130,10 @@ export class LoginEffects {
     })
   );
 
+  constructor(private actions: Actions,
+              private afAuth: AngularFireAuth) {
+  }
+
   private doFacebookLogin(): Promise<any> {
     const provider = new firebase.auth.FacebookAuthProvider();
     return this.afAuth.auth.signInWithPopup(provider);
@@ -151,4 +155,5 @@ export class LoginEffects {
       });
     }
   }
+
 }

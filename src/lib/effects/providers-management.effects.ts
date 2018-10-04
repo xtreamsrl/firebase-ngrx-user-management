@@ -101,7 +101,7 @@ export class ProvidersManagementEffects {
     map(action => action.payload),
     exhaustMap(payload => {
       return from((() => {
-        return this.afAuth.auth.signInWithPhoneNumber(payload.number, new firebase.auth.RecaptchaVerifier(payload.captchaContainerId, {
+        return this.afAuth.auth.currentUser.linkWithPhoneNumber(payload.number, new firebase.auth.RecaptchaVerifier(payload.captchaContainerId, {
           size: 'invisible',
           callback: token => {
             console.debug('Captcha token', token);

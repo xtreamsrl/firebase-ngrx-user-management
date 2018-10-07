@@ -99,3 +99,63 @@ export const isEmailVerifiedLoading = createSelector(
   getAuthState,
   state => state.customEmailHandler.emailVerified.loading
 );
+
+export const getPasswordResetCodeError = createSelector(
+  getAuthState,
+  state => state.customEmailHandler.passwordResetCode.error
+);
+
+export const isPasswordResetCodeLoading = createSelector(
+  getAuthState,
+  state => state.customEmailHandler.passwordResetCode.loading
+);
+
+export const getResetPasswordError = createSelector(
+  getAuthState,
+  state => state.customEmailHandler.resetPassword.error
+);
+
+export const isResetPasswordLoading = createSelector(
+  getAuthState,
+  state => state.customEmailHandler.resetPassword.loading
+);
+
+export const getCheckCodeError = createSelector(
+  getAuthState,
+  state => state.customEmailHandler.checkCode.error
+);
+
+export const isCheckCodeLoading = createSelector(
+  getAuthState,
+  state => state.customEmailHandler.checkCode.loading
+);
+
+export const getRecoverEmailError = createSelector(
+  getAuthState,
+  state => state.customEmailHandler.recoverEmail.error
+);
+
+export const isRecoverEmailLoading = createSelector(
+  getAuthState,
+  state => state.customEmailHandler.recoverEmail.loading
+);
+
+export const getResetPasswordOrCodeError = createSelector(
+  getAuthState,
+  state => state.customEmailHandler.resetPassword.error || state.customEmailHandler.passwordResetCode.error
+);
+
+export const isResetPasswordOrCodeLoading = createSelector(
+  getAuthState,
+  state => state.customEmailHandler.resetPassword.loading || state.customEmailHandler.passwordResetCode.loading
+);
+
+export const getRecoverEmailOrCheckCodeError = createSelector(
+  getAuthState,
+  state => state.customEmailHandler.recoverEmail.error || state.customEmailHandler.checkCode.error
+);
+
+export const isRecoverEmailOrCheckCodeLoading = createSelector(
+  getAuthState,
+  state => state.customEmailHandler.recoverEmail.loading || state.customEmailHandler.checkCode.loading
+);

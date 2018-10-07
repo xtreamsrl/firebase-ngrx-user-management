@@ -110,6 +110,11 @@ export const isPasswordResetCodeLoading = createSelector(
   state => state.customEmailHandler.passwordResetCode.loading
 );
 
+export const getPasswordResetCodeEmail = createSelector(
+  getAuthState,
+  state => state.customEmailHandler.passwordResetCode.email
+);
+
 export const getResetPasswordError = createSelector(
   getAuthState,
   state => state.customEmailHandler.resetPassword.error

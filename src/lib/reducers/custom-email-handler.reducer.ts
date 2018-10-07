@@ -10,6 +10,7 @@ export interface State {
     };
   };
   passwordResetCode: {
+    email: string;
     loading: boolean;
     success: boolean;
     error: {
@@ -67,15 +68,15 @@ export function reducer(state = initialState, action: CustomEmailHandlerActionsU
     }
 
     case CustomEmailHandlerActionTypes.VerifyPasswordResetCode: {
-      return {...state, passwordResetCode: {loading: true, success: false, error: null}};
+      return {...state, passwordResetCode: {email: null, loading: true, success: false, error: null}};
     }
 
     case CustomEmailHandlerActionTypes.VerifyPasswordResetCodeError: {
-      return {...state, passwordResetCode: {loading: false, success: false, error: action.payload}};
+      return {...state, passwordResetCode: {email: null, loading: false, success: false, error: action.payload}};
     }
 
     case CustomEmailHandlerActionTypes.VerifyPasswordResetCodeSuccess: {
-      return {...state, passwordResetCode: {loading: false, success: true, error: null}};
+      return {...state, passwordResetCode: {email: action.payload.email, loading: false, success: true, error: null}};
     }
 
     case CustomEmailHandlerActionTypes.CheckActionCode: {

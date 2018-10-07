@@ -10,12 +10,14 @@ import {RegistrationEffects} from './effects/registration.effects';
 import {ReAuthenticationEffects} from './effects/re-authentication-effects.service';
 import {ProvidersManagementEffects} from './effects/providers-management.effects';
 import {PasswordManagementEffects} from './effects/password-management.effects';
+import {CustomEmailHandlerEffects} from './effects/custom-email-handler.effects';
 
 @NgModule({
   imports: [
     AngularFireModule,
     AngularFireAuthModule,
     EffectsModule.forFeature([
+      CustomEmailHandlerEffects,
       LoginEffects,
       ReAuthenticationEffects,
       RegistrationEffects,

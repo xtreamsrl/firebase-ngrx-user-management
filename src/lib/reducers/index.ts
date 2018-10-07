@@ -1,18 +1,22 @@
 import * as fromUser from './user.reducer';
 import * as fromChangePassword from './password-management.reducer';
 import * as fromProviders from './providers-management.reducer';
+import * as fromCustomEmailHandler from './custom-email-handler.reducer';
+
 import {ActionReducerMap, createFeatureSelector, createSelector, MemoizedSelector} from '@ngrx/store';
 
 export interface AuthState {
   user: fromUser.State;
   changePassword: fromChangePassword.State;
   providers: fromProviders.State;
+  customEmailHandler: fromCustomEmailHandler.State;
 }
 
 export const reducers: ActionReducerMap<AuthState> = {
   user: fromUser.reducer,
   changePassword: fromChangePassword.reducer,
-  providers: fromProviders.reducer
+  providers: fromProviders.reducer,
+  customEmailHandler: fromCustomEmailHandler.reducer
 };
 
 export const getAuthState: MemoizedSelector<object, AuthState> = createFeatureSelector<AuthState>('auth');
@@ -71,4 +75,27 @@ export const getProvidersRequestStatus = createSelector(
       success: state.providers.success
     };
   }
+);
+
+export const getCustomEmailHandlerRequestStatus = createSelector(
+  getAuthState,
+  state => {
+    return {
+      emailVerified: {
+        loading: state.customEmailHandler.emailVerified.loading,
+        error: state.customEmailHandler.emailVerified.error,
+        success: state.customEmailHandler.emailVerified.success
+      }
+    };
+  }
+);
+
+export const getEmailVerifiedError = createSelector(
+  getAuthState,
+  state => state.customEmailHandler.emailVerified.error
+);
+
+export const isEmailVerifiedLoading = createSelector(
+  getAuthState,
+  state => state.customEmailHandler.emailVerified.loading
 );

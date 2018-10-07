@@ -8,7 +8,7 @@ export interface State {
       code: string;
       message: string
     };
-  },
+  };
   passwordResetCode: {
     loading: boolean;
     success: boolean;
@@ -16,7 +16,7 @@ export interface State {
       code: string;
       message: string
     };
-  },
+  };
   resetPassword: {
     loading: boolean;
     success: boolean;
@@ -24,7 +24,7 @@ export interface State {
       code: string;
       message: string
     };
-  },
+  };
   checkCode: {
     loading: boolean;
     success: boolean;
@@ -32,7 +32,7 @@ export interface State {
       code: string;
       message: string
     };
-  },
+  };
   recoverEmail: {
     loading: boolean;
     success: boolean;

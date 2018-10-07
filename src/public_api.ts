@@ -37,7 +37,7 @@ import {Credentials} from './lib/models/credentials';
 import {PasswordManagementActions, ProvidersManagementActions} from './lib/actions/index';
 import {State as UserState} from './lib/reducers/user.reducer';
 import {State as ProvidersState} from './lib/reducers/providers-management.reducer';
-import {CheckActionCode, CheckActionCodeSuccess, RecoverEmail, ResetPassword, VerifyEmailAddress,
+import {CheckActionCode, CheckActionCodeSuccess, CustomEmailHandlerActionTypes, RecoverEmail, ResetPassword, VerifyEmailAddress,
 VerifyPasswordResetCode, VerifyPasswordResetCodeSuccess} from './lib/actions/custom-email-handler.actions';
 
 export * from './lib/firebase-ngrx-user-management.service';
@@ -86,5 +86,6 @@ export {
   getPasswordResetCodeEmail,
   VerifyPasswordResetCodeSuccess,
   CheckActionCodeSuccess,
+  CustomEmailHandlerActionTypes,
   ProvidersState
 };

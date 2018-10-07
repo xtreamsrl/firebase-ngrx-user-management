@@ -99,7 +99,7 @@ export class VerifyEmailAddressSuccess implements Action {
 export class VerifyPasswordResetCode implements Action {
   readonly type = CustomEmailHandlerActionTypes.VerifyPasswordResetCode;
 
-  constructor(public payload: { actionCode: string}) {
+  constructor(public payload: { actionCode: string }) {
   }
 }
 
@@ -113,7 +113,7 @@ export class VerifyPasswordResetCodeError implements Action {
 export class VerifyPasswordResetCodeSuccess implements Action {
   readonly type = CustomEmailHandlerActionTypes.VerifyPasswordResetCodeSuccess;
 
-  constructor(public payload: { email: string }) {
+  constructor(public payload: { email: string, actionCode: string }) {
   }
 }
 

@@ -32,7 +32,7 @@ export class CustomEmailHandlerEffects {
     switchMap(payload => {
       return from(this.afAuth.auth.verifyPasswordResetCode(payload.actionCode)).pipe(
         switchMap((email: string) => {
-          return of(new customEmailHandlerActions.VerifyPasswordResetCodeSuccess({email}));
+          return of(new customEmailHandlerActions.VerifyPasswordResetCodeSuccess({email, actionCode: payload.actionCode}));
         }),
         catchError(error => of(new customEmailHandlerActions.VerifyPasswordResetCodeError(error)))
       );

@@ -153,7 +153,7 @@ export class ReAuthenticationError implements Action {
 export class ResetPasswordRequest implements Action {
   readonly type = AuthActionTypes.ResetPasswordRequest;
 
-  constructor(public payload: { email: string }) {
+  constructor(public payload: { email: string, redirectUrl: string }) {
   }
 }
 

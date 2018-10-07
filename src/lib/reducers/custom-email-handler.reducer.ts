@@ -45,11 +45,11 @@ export interface State {
 }
 
 const initialState = {
-  emailVerified: null,
-  passwordResetCode: null,
-  resetPassword: null,
-  checkCode: null,
-  recoverEmail: null
+  emailVerified: {},
+  passwordResetCode: {},
+  resetPassword: {},
+  checkCode: {},
+  recoverEmail: {}
 } as State;
 
 export function reducer(state = initialState, action: CustomEmailHandlerActionsUnion): State {

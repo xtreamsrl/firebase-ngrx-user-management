@@ -150,6 +150,11 @@ export const getResetPasswordOrCodeError = createSelector(
   state => state.customEmailHandler.resetPassword.error || state.customEmailHandler.passwordResetCode.error
 );
 
+export const getResetPasswordSuccess = createSelector(
+  getAuthState,
+  state => state.customEmailHandler.resetPassword.success
+);
+
 export const isResetPasswordOrCodeLoading = createSelector(
   getAuthState,
   state => state.customEmailHandler.resetPassword.loading || state.customEmailHandler.passwordResetCode.loading

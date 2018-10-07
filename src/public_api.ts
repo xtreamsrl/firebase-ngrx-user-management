@@ -18,6 +18,7 @@ import {
   getRecoverEmailOrCheckCodeError,
   getResetPasswordError,
   getResetPasswordOrCodeError,
+  getResetPasswordSuccess,
   getUser,
   getUserProviders,
   getUserProvidersState,
@@ -87,5 +88,6 @@ export {
   VerifyPasswordResetCodeSuccess,
   CheckActionCodeSuccess,
   CustomEmailHandlerActionTypes,
+  getResetPasswordSuccess,
   ProvidersState
 };

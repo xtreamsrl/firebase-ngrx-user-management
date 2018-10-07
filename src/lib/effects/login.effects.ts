@@ -123,7 +123,7 @@ export class LoginEffects {
     ofType<userActions.ResetPasswordRequest>(userActions.AuthActionTypes.ResetPasswordRequest),
     map((action: userActions.ResetPasswordRequest) => action.payload),
     exhaustMap(payload => {
-      return from(this.afAuth.auth.sendPasswordResetEmail(payload.email));
+      return from(this.afAuth.auth.sendPasswordResetEmail(payload.email, {url: payload.redirectUrl}));
     }),
     map(authData => {
       return new userActions.ResetPasswordRequestSuccess();

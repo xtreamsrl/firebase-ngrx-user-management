@@ -33,7 +33,7 @@ export const isAuthLoading = createSelector(
 
 export const isUserLogged = createSelector(
   getAuthState,
-  state => state.user.loggedIn && state.user.user.emailVerified
+  state => state.user.loggedIn && state.user.user && state.user.user.emailVerified
 );
 
 export const getUser = createSelector(

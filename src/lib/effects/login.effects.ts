@@ -11,6 +11,7 @@ import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import {SetProviders} from '../actions/providers-management.actions';
 import {Action} from '@ngrx/store';
+import UserCredential = firebase.auth.UserCredential;
 
 const PROVIDERS_MAP = {};
 PROVIDERS_MAP[firebase.auth.FacebookAuthProvider.FACEBOOK_SIGN_IN_METHOD] = 'facebook';
@@ -44,7 +45,7 @@ export class LoginEffects {
               }, {});
               console.debug(providers, authData.providerData.map(p => p.providerId));
               const user = new User(authData.uid, authData.displayName, authData.email, authData.phoneNumber, authData.photoURL, authData.emailVerified);
-              return from([new SetProviders(providers), new userActions.Authenticated(user)]);
+              return from([new SetProviders(providers), new userActions.Authenticated({user})]);
             })
           );
         } else {
@@ -134,17 +135,17 @@ export class LoginEffects {
               private afAuth: AngularFireAuth) {
   }
 
-  private doFacebookLogin(): Promise<any> {
+  private doFacebookLogin(): Promise<UserCredential> {
     const provider = new firebase.auth.FacebookAuthProvider();
     return this.afAuth.auth.signInWithPopup(provider);
   }
 
-  private doGoogleLogin(): Promise<any> {
+  private doGoogleLogin(): Promise<UserCredential> {
     const provider = new firebase.auth.GoogleAuthProvider();
     return this.afAuth.auth.signInWithPopup(provider);
   }
 
-  private doLoginWithCredentials(credentials: { email: string, password: string, remember?: boolean }): Promise<any> {
+  private doLoginWithCredentials(credentials: { email: string, password: string, remember?: boolean }): Promise<UserCredential> {
     if (credentials.remember) {
       return this.afAuth.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(() => {
         return this.afAuth.auth.signInWithEmailAndPassword(credentials.email, credentials.password);

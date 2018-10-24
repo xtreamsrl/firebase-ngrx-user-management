@@ -40,7 +40,7 @@ export class GetUser implements Action {
 export class Authenticated implements Action {
   readonly type = AuthActionTypes.Authenticated;
 
-  constructor(public payload?: User) {
+  constructor(public payload: { user: User }) {
 
   }
 }
@@ -83,7 +83,7 @@ export class CredentialsRegistration implements Action {
 export class RegistrationSuccess implements Action {
   readonly type = AuthActionTypes.RegistrationSuccess;
 
-  constructor(public payload?: any) {
+  constructor(public payload: { user: User }) {
   }
 }
 

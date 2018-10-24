@@ -31,7 +31,8 @@ export function reducer(state: State = defaultState, action: Action): State {
       return {...state, loading: true, success: false};
 
     case userActions.AuthActionTypes.Authenticated:
-      return {...state, user: action.payload, loading: false, loggedIn: true, success: false};
+    case userActions.AuthActionTypes.RegistrationSuccess:
+      return {...state, user: action.payload.user, loading: false, loggedIn: true, success: false};
 
     case userActions.AuthActionTypes.NotAuthenticated:
       return {...state, ...defaultState, loading: false, loggedIn: false, success: false};
@@ -58,8 +59,6 @@ export function reducer(state: State = defaultState, action: Action): State {
       return {...state, loading: false, error: null, success: true};
     case userActions.AuthActionTypes.Logout:
       return {...state, loading: true};
-    case userActions.AuthActionTypes.RegistrationSuccess:
-      return {...state, loading: false, loggedIn: true, success: true, error: null};
     case userActions.AuthActionTypes.DeleteAccount:
       return {...state, loading: true, success: true, error: null};
     case userActions.AuthActionTypes.DeleteAccountSuccess:

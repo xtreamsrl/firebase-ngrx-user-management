@@ -3,15 +3,16 @@ import {Actions, Effect, ofType} from '@ngrx/effects';
 
 import {AngularFireAuth} from '@angular/fire/auth';
 
-import {catchError, exhaustMap, map} from 'rxjs/operators';
+import {catchError, exhaustMap, map, switchMap} from 'rxjs/operators';
 import {AuthActions} from '../actions';
 import {from, Observable, of} from 'rxjs';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import {User} from '../models/auth.model';
 import UserCredential = firebase.auth.UserCredential;
+import {ProvidersManagementActionsUnion, SetProviders} from '../actions/providers-management.actions';
 
-export type Action = AuthActions.AuthActionsUnion;
+export type Action = AuthActions.AuthActionsUnion | ProvidersManagementActionsUnion;
 
 @Injectable()
 export class RegistrationEffects {
@@ -26,11 +27,11 @@ export class RegistrationEffects {
     map((action: AuthActions.GoogleRegistration) => action.payload),
     exhaustMap(payload => {
       return from(this.doGoogleRegistration()).pipe(
-        map(credential => {
+        switchMap(credential => {
           console.debug('credential', credential);
           const authData = credential.user;
           const user = new User(authData.uid, authData.displayName, authData.email, authData.phoneNumber, authData.photoURL, authData.emailVerified);
-          return new AuthActions.RegistrationSuccess({user});
+          return from([new SetProviders({google: true}), new AuthActions.RegistrationSuccess({user})]);
         }),
         catchError(error => of(new AuthActions.AuthError(error)))
       );
@@ -43,11 +44,11 @@ export class RegistrationEffects {
     map((action: AuthActions.FacebookRegistration) => action.payload),
     exhaustMap(payload => {
       return from(this.doFacebookRegistration()).pipe(
-        map(credential => {
+        switchMap(credential => {
           console.debug('facebookSignUp', credential);
           const authData = credential.user;
           const user = new User(authData.uid, authData.displayName, authData.email, authData.phoneNumber, authData.photoURL, authData.emailVerified);
-          return new AuthActions.RegistrationSuccess({user});
+          return from([new SetProviders({facebook: true}), new AuthActions.RegistrationSuccess({user})]);
         }),
         catchError(error => of(new AuthActions.AuthError(error)))
       );

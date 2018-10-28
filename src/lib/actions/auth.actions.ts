@@ -25,6 +25,7 @@ export enum AuthActionTypes {
   ReAuthenticationSuccess = '[Auth] ReAuthentication Success',
   RegistrationSuccess = '[Auth] Registration Success',
   ResetPasswordRequest = '[Auth] Reset Password Request',
+  ResetAuthState = '[Auth] Reset State',
   ResetPasswordRequestSuccess = '[Auth] Reset Password Request Success',
   VerificationEmailError = '[Auth] Verification Email Error',
   VerificationEmailSent = '[Auth] Verification Email Sent'
@@ -208,6 +209,11 @@ export class DeleteAccountError implements Action {
 
 }
 
+export class ResetAuthState implements Action {
+  readonly type = AuthActionTypes.ResetAuthState;
+
+}
+
 export type AuthActionsUnion
   = GetUser
   | Authenticated
@@ -233,4 +239,5 @@ export type AuthActionsUnion
   | VerificationEmailError
   | DeleteAccount
   | DeleteAccountError
-  | DeleteAccountSuccess;
+  | DeleteAccountSuccess
+  | ResetAuthState;

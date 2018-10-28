@@ -50,6 +50,7 @@ export function reducer(state: State = defaultState, action: Action): State {
       return {...state, loading: true, success: false};
 
     case userActions.AuthActionTypes.ResetPasswordRequestSuccess:
+    case userActions.AuthActionTypes.ResetAuthState:
       return {...state, loading: false, success: true};
 
     case userActions.AuthActionTypes.AuthError:

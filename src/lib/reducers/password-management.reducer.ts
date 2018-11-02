@@ -1,4 +1,4 @@
-import {PasswordManagementActionsUnion, PasswordManagementActionTypes} from '../actions/password-management.actions';
+import {PasswordManagementActions} from '../actions';
 
 export interface State {
   loading: boolean;
@@ -15,22 +15,25 @@ const initialState = {
   error: null
 } as State;
 
-export function reducer(state = initialState, action: PasswordManagementActionsUnion): State {
+export function reducer(state = initialState, action: PasswordManagementActions.PasswordManagementActionsUnion): State {
   switch (action.type) {
 
-    case PasswordManagementActionTypes.ChangePasswordRequest: {
+    case PasswordManagementActions.PasswordManagementActionTypes.ResetPasswordRequest:
+    case PasswordManagementActions.PasswordManagementActionTypes.ChangePasswordRequest: {
       return {...state, loading: true, success: false, error: null};
     }
 
-    case PasswordManagementActionTypes.ChangePasswordError: {
+    case PasswordManagementActions.PasswordManagementActionTypes.ResetPasswordRequestError:
+    case PasswordManagementActions.PasswordManagementActionTypes.ChangePasswordError: {
       return {...state, loading: false, success: false, error: action.payload};
     }
 
-    case PasswordManagementActionTypes.ChangePasswordSuccess: {
+    case PasswordManagementActions.PasswordManagementActionTypes.ResetPasswordRequestSuccess:
+    case PasswordManagementActions.PasswordManagementActionTypes.ChangePasswordSuccess: {
       return {...state, loading: false, success: true, error: null};
     }
 
-    case PasswordManagementActionTypes.ResetChangePasswordStatus: {
+    case PasswordManagementActions.PasswordManagementActionTypes.ResetPasswordStatus: {
       return {...state, loading: false, success: false, error: null};
     }
 

@@ -4,7 +4,10 @@ export enum PasswordManagementActionTypes {
   ChangePasswordRequest = '[Auth/Password] Change Password Request',
   ChangePasswordError = '[Auth/Password] Change Password Error',
   ChangePasswordSuccess = '[Auth/Password] Change Password Success',
-  ResetChangePasswordStatus = '[Auth/Password] Reset Change Password Status'
+  ResetPasswordStatus = '[Auth/Password] Reset Change Password Status',
+  ResetPasswordRequest = '[Auth/Password] Reset Password Request',
+  ResetPasswordRequestError = '[Auth/Password] Reset Password Request Error',
+  ResetPasswordRequestSuccess = '[Auth/Password] Reset Password Request Success'
 }
 
 export class ChangePasswordRequest implements Action {
@@ -26,12 +29,35 @@ export class ChangePasswordSuccess implements Action {
 
 }
 
-export class ResetChangePasswordStatus implements Action {
-  readonly type = PasswordManagementActionTypes.ResetChangePasswordStatus;
+export class ResetPasswordStatus implements Action {
+  readonly type = PasswordManagementActionTypes.ResetPasswordStatus;
+
+}
+
+export class ResetPasswordRequest implements Action {
+  readonly type = PasswordManagementActionTypes.ResetPasswordRequest;
+
+  constructor(public payload: { email: string, redirectUrl: string }) {
+  }
+
+}
+
+export class ResetPasswordRequestError implements Action {
+  readonly type = PasswordManagementActionTypes.ResetPasswordRequestError;
+
+  constructor(public payload: { code: string, message: string }) {
+  }
+}
+
+export class ResetPasswordRequestSuccess implements Action {
+  readonly type = PasswordManagementActionTypes.ResetPasswordRequestSuccess;
 
 }
 
 export type PasswordManagementActionsUnion = ChangePasswordRequest
   | ChangePasswordError
   | ChangePasswordSuccess
-  | ResetChangePasswordStatus;
+  | ResetPasswordStatus
+  | ResetPasswordRequest
+  | ResetPasswordRequestSuccess
+  | ResetPasswordRequestError;

@@ -43,13 +43,11 @@ export function reducer(state: State = defaultState, action: Action): State {
     case userActions.AuthActionTypes.FacebookRegistration:
     case userActions.AuthActionTypes.CredentialsLogin:
     case userActions.AuthActionTypes.CredentialsRegistration:
-    case userActions.AuthActionTypes.ResetPasswordRequest:
     case userActions.AuthActionTypes.FacebookReAuthentication:
     case userActions.AuthActionTypes.CredentialsReAuthentication:
     case userActions.AuthActionTypes.GoogleReAuthentication:
       return {...state, loading: true, success: false};
 
-    case userActions.AuthActionTypes.ResetPasswordRequestSuccess:
     case userActions.AuthActionTypes.ResetAuthState:
       return {...state, loading: false, success: true};
 

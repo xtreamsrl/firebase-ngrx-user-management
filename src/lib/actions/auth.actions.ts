@@ -24,9 +24,7 @@ export enum AuthActionTypes {
   ReAuthenticationError = '[Auth] ReAuthentication Error',
   ReAuthenticationSuccess = '[Auth] ReAuthentication Success',
   RegistrationSuccess = '[Auth] Registration Success',
-  ResetPasswordRequest = '[Auth] Reset Password Request',
   ResetAuthState = '[Auth] Reset State',
-  ResetPasswordRequestSuccess = '[Auth] Reset Password Request Success',
   VerificationEmailError = '[Auth] Verification Email Error',
   VerificationEmailSent = '[Auth] Verification Email Sent'
 }
@@ -151,20 +149,6 @@ export class ReAuthenticationError implements Action {
   }
 }
 
-export class ResetPasswordRequest implements Action {
-  readonly type = AuthActionTypes.ResetPasswordRequest;
-
-  constructor(public payload: { email: string, redirectUrl: string }) {
-  }
-}
-
-export class ResetPasswordRequestSuccess implements Action {
-  readonly type = AuthActionTypes.ResetPasswordRequestSuccess;
-
-  constructor() {
-  }
-}
-
 export class SendVerificationEmail implements Action {
   readonly type = AuthActionTypes.SendVerificationEmail;
 
@@ -232,8 +216,6 @@ export type AuthActionsUnion
   | FacebookRegistration
   | CredentialsRegistration
   | RegistrationSuccess
-  | ResetPasswordRequest
-  | ResetPasswordRequestSuccess
   | SendVerificationEmail
   | VerificationEmailSent
   | VerificationEmailError

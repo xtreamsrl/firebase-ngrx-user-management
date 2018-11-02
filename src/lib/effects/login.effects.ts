@@ -23,7 +23,7 @@ PROVIDERS_MAP[firebase.auth.PhoneAuthProvider.PHONE_SIGN_IN_METHOD] = 'phone';
 export class LoginEffects {
 
   @Effect()
-  getUser: Observable<Action> = this.actions.pipe(
+  getUser: Observable<Action> = this.actions$.pipe(
     ofType<userActions.GetUser>(userActions.AuthActionTypes.GetUser),
     map((action: userActions.GetUser) => action.payload),
     exhaustMap(payload => this.afAuth.authState.pipe(
@@ -57,7 +57,7 @@ export class LoginEffects {
   ;
 
   @Effect()
-  googleLogin: Observable<Action> = this.actions.pipe(
+  googleLogin: Observable<Action> = this.actions$.pipe(
     ofType(userActions.AuthActionTypes.GoogleLogin),
     map((action: userActions.GoogleLogin) => action.payload),
     exhaustMap(payload => {
@@ -72,7 +72,7 @@ export class LoginEffects {
   );
 
   @Effect()
-  facebookLogin: Observable<Action> = this.actions.pipe(
+  facebookLogin: Observable<Action> = this.actions$.pipe(
     ofType(userActions.AuthActionTypes.FacebookLogin),
     map((action: userActions.FacebookLogin) => action.payload),
     exhaustMap(payload => {
@@ -87,7 +87,7 @@ export class LoginEffects {
   );
 
   @Effect()
-  loginWithCredentials: Observable<Action> = this.actions.pipe(
+  loginWithCredentials: Observable<Action> = this.actions$.pipe(
     ofType(userActions.AuthActionTypes.CredentialsLogin),
     map((action: userActions.CredentialsLogin) => {
       return {
@@ -108,7 +108,7 @@ export class LoginEffects {
   );
 
   @Effect()
-  logout: Observable<Action> = this.actions.pipe(
+  logout: Observable<Action> = this.actions$.pipe(
     ofType(userActions.AuthActionTypes.Logout),
     map((action: userActions.Logout) => action.payload),
     exhaustMap(payload => {
@@ -119,19 +119,7 @@ export class LoginEffects {
     })
   );
 
-  @Effect()
-  passwordForgotten$ = this.actions.pipe(
-    ofType<userActions.ResetPasswordRequest>(userActions.AuthActionTypes.ResetPasswordRequest),
-    map((action: userActions.ResetPasswordRequest) => action.payload),
-    exhaustMap(payload => {
-      return from(this.afAuth.auth.sendPasswordResetEmail(payload.email, {url: payload.redirectUrl}));
-    }),
-    map(authData => {
-      return new userActions.ResetPasswordRequestSuccess();
-    })
-  );
-
-  constructor(private actions: Actions,
+  constructor(private actions$: Actions,
               private afAuth: AngularFireAuth) {
   }
 

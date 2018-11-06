@@ -90,6 +90,16 @@ export const getCustomEmailHandlerRequestStatus = createSelector(
   }
 );
 
+export const getEmailVerifiedStatus = createSelector(
+  getAuthState,
+  state => state.customEmailHandler.emailVerified
+);
+
+export const getPasswordResetStatus = createSelector(
+  getAuthState,
+  state => state.customEmailHandler.passwordResetCode
+);
+
 export const getEmailVerifiedError = createSelector(
   getAuthState,
   state => state.customEmailHandler.emailVerified.error

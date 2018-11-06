@@ -11,8 +11,10 @@ import {
   getCheckCodeError,
   getCustomEmailHandlerRequestStatus,
   getEmailVerifiedError,
+  getEmailVerifiedStatus,
   getPasswordResetCodeEmail,
   getPasswordResetCodeError,
+  getPasswordResetStatus,
   getProvidersRequestStatus,
   getRecoverEmailError,
   getRecoverEmailOrCheckCodeError,
@@ -80,5 +82,7 @@ export {
   getResetPasswordSuccess,
   ProvidersState,
   AuthActions,
-  CustomEmailHandlerActions
+  CustomEmailHandlerActions,
+  getEmailVerifiedStatus,
+  getPasswordResetStatus
 };

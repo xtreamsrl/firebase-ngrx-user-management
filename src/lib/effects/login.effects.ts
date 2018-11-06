@@ -4,7 +4,7 @@ import {User} from '../models/auth.model';
 
 import {AngularFireAuth} from '@angular/fire/auth';
 
-import {catchError, exhaustMap, map, switchMap, take} from 'rxjs/operators';
+import {catchError, exhaustMap, map, switchMap, take, tap} from 'rxjs/operators';
 import * as userActions from '../actions/auth.actions';
 import {from, Observable, of, zip} from 'rxjs';
 import * as firebase from 'firebase/app';
@@ -53,8 +53,7 @@ export class LoginEffects {
         }
       }))
     )
-  )
-  ;
+  );
 
   @Effect()
   googleLogin: Observable<Action> = this.actions$.pipe(
@@ -117,6 +116,12 @@ export class LoginEffects {
     map(authData => {
       return new userActions.NotAuthenticated();
     })
+  );
+
+  @Effect({dispatch: false})
+  refreshToken$ = this.actions$.pipe(
+    ofType(userActions.AuthActionTypes.RefreshToken),
+    tap(action => this.afAuth.auth.currentUser.getIdToken(true))
   );
 
   constructor(private actions$: Actions,

@@ -23,6 +23,7 @@ export enum AuthActionTypes {
   SendVerificationEmail = '[Auth] Send Verification Email',
   ReAuthenticationError = '[Auth] ReAuthentication Error',
   ReAuthenticationSuccess = '[Auth] ReAuthentication Success',
+  RefreshToken = '[Auth] ReFresh Token',
   RegistrationSuccess = '[Auth] Registration Success',
   ResetAuthState = '[Auth] Reset State',
   VerificationEmailError = '[Auth] Verification Email Error',
@@ -198,6 +199,11 @@ export class ResetAuthState implements Action {
 
 }
 
+export class RefreshToken implements Action {
+  readonly type = AuthActionTypes.RefreshToken;
+
+}
+
 export type AuthActionsUnion
   = GetUser
   | Authenticated
@@ -222,4 +228,5 @@ export type AuthActionsUnion
   | DeleteAccount
   | DeleteAccountError
   | DeleteAccountSuccess
-  | ResetAuthState;
+  | ResetAuthState
+  | RefreshToken;

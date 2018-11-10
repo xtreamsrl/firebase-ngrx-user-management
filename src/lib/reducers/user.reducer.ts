@@ -53,7 +53,7 @@ export function reducer(state: State = defaultState, action: Action): State {
 
     case AuthActions.AuthActionTypes.AuthError:
     case AuthActions.AuthActionTypes.ReAuthenticationError:
-      return {...state, loading: false, success: false};
+      return {...state, loading: false, success: false, error: action.payload};
     case AuthActions.AuthActionTypes.ReAuthenticationSuccess:
       return {...state, loading: false, error: null, success: true};
     case AuthActions.AuthActionTypes.Logout:

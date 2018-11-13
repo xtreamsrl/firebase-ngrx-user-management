@@ -25,6 +25,7 @@ import {
   getUserProviders,
   getUserProvidersState,
   getUserState,
+  getVerifyResetPasswordProcedure,
   isAuthLoading,
   isAuthSuccess,
   isCheckCodeLoading,
@@ -84,5 +85,6 @@ export {
   AuthActions,
   CustomEmailHandlerActions,
   getEmailVerifiedStatus,
+  getVerifyResetPasswordProcedure,
   getPasswordResetStatus
 };

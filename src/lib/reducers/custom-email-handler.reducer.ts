@@ -1,4 +1,9 @@
 import {CustomEmailHandlerActionsUnion, CustomEmailHandlerActionTypes} from '../actions/custom-email-handler.actions';
+const initialRequestStatus = {
+  loading: false,
+  success: false,
+  error: null
+};
 
 export interface State {
   emailVerified: {
@@ -45,11 +50,11 @@ export interface State {
 }
 
 const initialState = {
-  emailVerified: {},
-  passwordResetCode: {},
-  resetPassword: {},
-  checkCode: {},
-  recoverEmail: {}
+  emailVerified: {...initialRequestStatus},
+  passwordResetCode: {...initialRequestStatus},
+  resetPassword: {...initialRequestStatus},
+  checkCode: {...initialRequestStatus},
+  recoverEmail: {...initialRequestStatus}
 } as State;
 
 export function reducer(state = initialState, action: CustomEmailHandlerActionsUnion): State {

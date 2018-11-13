@@ -97,6 +97,11 @@ export const getEmailVerifiedStatus = createSelector(
 
 export const getPasswordResetStatus = createSelector(
   getAuthState,
+  state => state.customEmailHandler.resetPassword
+);
+
+export const getVerifyResetPasswordProcedure = createSelector(
+  getAuthState,
   state => state.customEmailHandler.passwordResetCode
 );
 

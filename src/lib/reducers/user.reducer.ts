@@ -11,6 +11,7 @@ export interface State {
   loading: boolean;
   error: {
     code: string;
+    message: string;
   };
   success: boolean;
 }
@@ -60,6 +61,8 @@ export function reducer(state: State = defaultState, action: Action): State {
       return {...state, loading: true};
     case AuthActions.AuthActionTypes.DeleteAccount:
       return {...state, loading: true, success: true, error: null};
+    case AuthActions.AuthActionTypes.DeleteAccountError:
+      return {...state, loading: false, success: false, error: action.payload};
     case AuthActions.AuthActionTypes.DeleteAccountSuccess:
       return {...state, loading: false, loggedIn: false, success: true, error: null, user: null};
 

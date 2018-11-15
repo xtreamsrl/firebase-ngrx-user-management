@@ -189,7 +189,7 @@ export class DeleteAccountSuccess implements Action {
 export class DeleteAccountError implements Action {
   readonly type = AuthActionTypes.DeleteAccountError;
 
-  constructor(public payload: { code: string }) {
+  constructor(public payload: { code: string; message: string; }) {
   }
 
 }

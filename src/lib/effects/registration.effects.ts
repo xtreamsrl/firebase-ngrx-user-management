@@ -30,7 +30,8 @@ export class RegistrationEffects {
         switchMap(credential => {
           console.debug('credential', credential);
           const authData = credential.user;
-          const user = new User(authData.uid, authData.displayName, authData.email, authData.phoneNumber, authData.photoURL, authData.emailVerified);
+          const photoUrl = authData.photoURL.replace('/photo.jpg', '/s500-c/photo.jpg');
+          const user = new User(authData.uid, authData.displayName, authData.email, authData.phoneNumber, photoUrl, authData.emailVerified);
           return from([new SetProviders({google: true}), new AuthActions.RegistrationSuccess({user})]);
         }),
         catchError(error => of(new AuthActions.AuthError(error)))
@@ -47,7 +48,9 @@ export class RegistrationEffects {
         switchMap(credential => {
           console.debug('facebookSignUp', credential);
           const authData = credential.user;
-          const user = new User(authData.uid, authData.displayName, authData.email, authData.phoneNumber, authData.photoURL, authData.emailVerified);
+          const photoUrl = `${authData.photoURL}?height=500`;
+          console.log('PhotoUrl', photoUrl);
+          const user = new User(authData.uid, authData.displayName, authData.email, authData.phoneNumber, photoUrl, authData.emailVerified);
           return from([new SetProviders({facebook: true}), new AuthActions.RegistrationSuccess({user})]);
         }),
         catchError(error => of(new AuthActions.AuthError(error)))

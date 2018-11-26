@@ -30,7 +30,7 @@ export class RegistrationEffects {
         switchMap(credential => {
           console.debug('credential', credential);
           const authData = credential.user;
-          const photoUrl = authData.photoURL.replace('/photo.jpg', '/s500-c/photo.jpg');
+          const photoUrl = `${authData.photoURL}?sz=500`;
           const user = new User(authData.uid, authData.displayName, authData.email, authData.phoneNumber, photoUrl, authData.emailVerified);
           return from([new SetProviders({google: true}), new AuthActions.RegistrationSuccess({user})]);
         }),

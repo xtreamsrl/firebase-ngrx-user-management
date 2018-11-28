@@ -101,6 +101,9 @@ export class RegistrationEffects {
 
   private doGoogleRegistration(): Promise<UserCredential> {
     const provider = new firebase.auth.GoogleAuthProvider();
+    provider.setCustomParameters({
+      prompt: 'select_account'
+    });
     return this.afAuth.auth.signInWithPopup(provider);
   }
 

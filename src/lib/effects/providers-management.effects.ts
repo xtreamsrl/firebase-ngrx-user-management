@@ -44,7 +44,18 @@ export class ProvidersManagementEffects {
         await this.doLinkToCredentials(this.afAuth.auth.currentUser.email, payload.password);
       })).pipe(
         mapTo(new ProvidersManagementActions.LinkSuccess({provider: 'password'})),
-        catchError(error => of(new ProvidersManagementActions.LinkError(error)))
+        catchError(error => {
+          if (error.code === 'auth/popup-blocked') {
+            return from(this.reAuthenticateWithRedirect().then(async res => {
+              await this.doLinkToCredentials(this.afAuth.auth.currentUser.email, payload.password);
+            })).pipe(
+              mapTo(new ProvidersManagementActions.LinkSuccess({provider: 'password'})),
+              catchError(error1 => of(new ProvidersManagementActions.LinkError(error1)))
+            );
+          } else {
+            return of(new ProvidersManagementActions.LinkError(error));
+          }
+        })
       );
     })
   );
@@ -170,6 +181,11 @@ export class ProvidersManagementEffects {
     return this.afAuth.auth.currentUser.reauthenticateWithPopup(provider);
   }
 
+  private doFacebookReAuthenticationWithRedirect(): Promise<any> {
+    const provider = new firebase.auth.FacebookAuthProvider();
+    return this.afAuth.auth.currentUser.reauthenticateWithRedirect(provider);
+  }
+
   private reAuthenticate(): Promise<any> {
     return this.afAuth.auth.fetchSignInMethodsForEmail(this.afAuth.auth.currentUser.email).then(
       async res => {
@@ -184,7 +200,26 @@ export class ProvidersManagementEffects {
     );
   }
 
+  private reAuthenticateWithRedirect(): Promise<any> {
+    return this.afAuth.auth.fetchSignInMethodsForEmail(this.afAuth.auth.currentUser.email).then(
+      async res => {
+        if (res.indexOf('facebook.com') >= 0) {
+          await this.doFacebookReAuthenticationWithRedirect();
+          return;
+        } else {
+          await this.doGoogleReAuthenticationWithRedirect();
+          return;
+        }
+      }
+    );
+  }
+
   private doGoogleReAuthentication(): Promise<any> {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    return this.afAuth.auth.currentUser.reauthenticateWithPopup(provider);
+  }
+
+  private doGoogleReAuthenticationWithRedirect(): Promise<any> {
     const provider = new firebase.auth.GoogleAuthProvider();
     return this.afAuth.auth.currentUser.reauthenticateWithPopup(provider);
   }

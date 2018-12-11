@@ -1,0 +1,19 @@
+{
+  "name": "@xtream/firebase-ngrx-user-management",
+  "version": "0.0.2",
+  "peerDependencies": {
+    "@angular/common": "^6.0.0",
+    "@angular/core": "^6.0.0",
+    "@angular/fire": "^5.0.2",
+    "@ngrx/effects": "^6.0.1",
+    "@ngrx/entity": "^6.0.1",
+    "@ngrx/store": "^6.0.1",
+    "zone.js": "^0.8.26",
+    "core-js": "^2.5.4",
+    "@angular/platform-browser-dynamic": "^6.0.3",
+    "rxjs": "^6.0.0",
+    "firebase": "^5.5.2"
+  },
+  "devDependencies": {
+  }
+}

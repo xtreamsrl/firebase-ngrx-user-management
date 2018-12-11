@@ -3,12 +3,16 @@
     <mat-card-title>Login</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <form>
+    <div>
+      <button mat-stroked-button color="warn" (click)="facebookLogin.emit()">Facebook</button>
+      <button mat-stroked-button color="warn" (click)="googleLogin.emit()">Google</button>
+    </div>
+    <form [formGroup]="loginForm">
       <table cellspacing="0">
         <tr>
           <td>
             <mat-form-field>
-              <input matInput placeholder="Username" name="username">
+              <input matInput placeholder="E-mail" name="email" formControlName="email">
             </mat-form-field>
           </td>
         </tr>
@@ -17,6 +21,11 @@
             <mat-form-field>
               <input matInput placeholder="Password" type="password" name="password">
             </mat-form-field>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <mat-checkbox>Remember me!</mat-checkbox>
           </td>
         </tr>
       </table>

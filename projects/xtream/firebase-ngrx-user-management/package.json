@@ -1,6 +1,24 @@
 {
   "name": "@xtream/firebase-ngrx-user-management",
-  "version": "0.0.2",
+  "version": "0.0.3",
+  "description": "User auth management powerd by NgRx and Firebase",
+  "homepage": "https://github.com/xtreamsrl/firebase-ngrx-user-management#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xtreamsrl/firebase-ngrx-user-management.git"
+  },
+  "keywords": [
+    "NgRx",
+    "Firebase",
+    "Angular",
+    "Auth",
+    "User"
+  ],
+  "author": "xtream",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xtreamsrl/firebase-ngrx-user-management/issues"
+  },
   "peerDependencies": {
     "@angular/common": "^6.0.0",
     "@angular/core": "^6.0.0",

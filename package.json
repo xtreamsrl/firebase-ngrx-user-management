@@ -1,15 +1,23 @@
 {
   "name": "firebase-ngrx-user-management-example",
-  "version": "0.0.0",
+  "version": "0.0.0-development",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "build_lib": "npx ng build @xtream/firebase-ngrx-user-management",
+    "copy-license": "copy .\\LICENSE .\\dist\\xtream\\firebase-ngrx-user-management",
+    "copy-readme": "copy .\\README.md .\\dist\\xtream\\firebase-ngrx-user-management",
+    "copy-files": "npm run copy-license && npm run copy-readme",
+    "npm_pack": "cd dist/xtream/firebase-ngrx-user-management && npm pack",
+    "package": "npm run build_lib && npm run copy-files && npm run npm_pack",
+    "semantic-release": "npx semantic-release",
+    "commit": "npx git-cz"
   },
-  "private": true,
+  "private": false,
   "dependencies": {
     "@angular/animations": "^6.1.10",
     "@angular/cdk": "^7.1.1",
@@ -42,6 +50,8 @@
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~8.9.4",
     "codelyzer": "~4.3.0",
+    "commitizen": "^3.0.5",
+    "cz-conventional-changelog": "^2.1.0",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~3.0.0",
@@ -51,10 +61,21 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "ng-packagr": "^4.1.0",
     "protractor": "~5.4.0",
+    "semantic-release": "^15.12.5",
+    "semantic-release-cli": "^4.0.12",
     "ts-node": "~7.0.0",
     "tsickle": ">=0.29.0",
     "tslib": "^1.9.0",
     "tslint": "~5.11.0",
     "typescript": "~2.9.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xtreamsrl/firebase-ngrx-user-management.git"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }

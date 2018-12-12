@@ -11,6 +11,7 @@ import {environment} from '../environments/environment';
 import {StoreModule} from '@ngrx/store';
 import {reducers} from './core/reducers';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {FirebaseNgrxUserManagementModule} from '@xtream/firebase-ngrx-user-management';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
     FormsModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    FirebaseNgrxUserManagementModule,
     AngularFireModule.initializeApp(environment.firebase),
     StoreModule.forRoot(reducers),
     !environment.production ? StoreDevtoolsModule.instrument() : [],

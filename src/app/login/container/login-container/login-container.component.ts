@@ -12,7 +12,7 @@ export class LoginContainerComponent implements OnInit {
   constructor(private store: Store<AuthState>) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
   }
 
   onGoogleLogin(): void {

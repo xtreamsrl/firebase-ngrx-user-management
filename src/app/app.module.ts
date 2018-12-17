@@ -15,6 +15,8 @@ import {FirebaseNgrxUserManagementModule} from '@xtream/firebase-ngrx-user-manag
 import {EffectsModule} from '@ngrx/effects';
 import { ToolbarContainerComponent } from './toolbar/toolbar-container/toolbar-container.component';
 import { ToolbarComponent } from './toolbar/toolbar/toolbar.component';
+import { RegistrationComponent } from './registration/component/registration/registration.component';
+import { RegistrationContainerComponent } from './registration/container/registration-container/registration-container.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { ToolbarComponent } from './toolbar/toolbar/toolbar.component';
     UserComponent,
     LoginContainerComponent,
     ToolbarContainerComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    RegistrationComponent,
+    RegistrationContainerComponent
   ],
   imports: [
     CustomMaterialModule,
@@ -33,8 +37,8 @@ import { ToolbarComponent } from './toolbar/toolbar/toolbar.component';
     FirebaseNgrxUserManagementModule,
     AngularFireModule.initializeApp(environment.firebase),
     StoreModule.forRoot(reducers),
-    !environment.production ? StoreDevtoolsModule.instrument() : [],
-    EffectsModule.forRoot([])
+    EffectsModule.forRoot([]),
+    !environment.production ? StoreDevtoolsModule.instrument() : []
   ],
   providers: [],
   bootstrap: [AppComponent]

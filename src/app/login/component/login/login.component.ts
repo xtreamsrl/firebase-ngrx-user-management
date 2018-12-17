@@ -1,6 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Credentials} from '@xtream/firebase-ngrx-user-management';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,7 @@ export class LoginComponent implements OnInit {
   @Output() facebookLogin = new EventEmitter();
   @Output() loginWithCredentials = new EventEmitter<Credentials>();
 
-  constructor() {
+  constructor(private router: Router) {
     this.loginForm = new FormGroup({
       email: new FormControl(null, [Validators.required]),
       password: new FormControl(null, [Validators.required]),

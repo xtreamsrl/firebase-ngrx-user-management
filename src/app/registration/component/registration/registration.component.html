@@ -1,13 +1,13 @@
 <mat-card class="main-card">
   <mat-card-header>
-    <mat-card-title>Login</mat-card-title>
+    <mat-card-title>Registration</mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <div>
       <button mat-stroked-button color="warn" (click)="facebookLogin.emit()">Facebook</button>
       <button mat-stroked-button color="warn" (click)="googleLogin.emit()">Google</button>
     </div>
-    <form [formGroup]="loginForm">
+    <form [formGroup]="registrationForm">
       <table cellspacing="0">
         <tr>
           <td>
@@ -25,16 +25,19 @@
         </tr>
         <tr>
           <td>
-            <mat-checkbox>Remember me!</mat-checkbox>
+            <mat-form-field>
+              <input matInput placeholder="Confirm password" type="password" name="confirm password"
+                     formControlName="confirmPassword">
+            </mat-form-field>
           </td>
         </tr>
       </table>
     </form>
   </mat-card-content>
   <mat-card-actions>
-    <button [disabled]="!loginForm.valid" mat-raised-button color="primary" (click)="login()">Login</button>
+    <button [disabled]="!registrationForm.valid" mat-raised-button color="primary" (click)="signUp()">SIGN UP</button>
   </mat-card-actions>
-  <mat-card-actions>
-    <button mat-raised-button color="primary" routerLink="/registration">SIGN UP</button>
-  </mat-card-actions>
+  <div *ngIf="error" class="error-message">
+    ERROR: {{ error }}
+  </div>
 </mat-card>

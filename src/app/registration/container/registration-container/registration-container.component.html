@@ -1,0 +1,4 @@
+<app-registration (googleLogin)="onGoogleLogin()"
+                  (facebookLogin)="onFacebookLogin()"
+                  (signUpWithCredentials)="onSignUpWithCredentials($event)"
+                  [error]="(error$|async)?.code"></app-registration>

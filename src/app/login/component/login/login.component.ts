@@ -1,5 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {Credentials} from '@xtream/firebase-ngrx-user-management';
 
 @Component({
   selector: 'app-login',
@@ -7,10 +8,11 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  public loginForm: FormGroup;
+
   @Output() googleLogin = new EventEmitter();
   @Output() facebookLogin = new EventEmitter();
-
-  public loginForm: FormGroup;
+  @Output() loginWithCredentials = new EventEmitter<Credentials>();
 
   constructor() {
     this.loginForm = new FormGroup({
@@ -23,8 +25,8 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
-  public toggleRememberMe(): void {
-    this.loginForm.controls['rememberMe'].setValue(!this.loginForm.controls['rememberMe'].patchValue);
+  login(): void {
+    this.loginWithCredentials.emit(this.loginForm.getRawValue());
   }
 
 }

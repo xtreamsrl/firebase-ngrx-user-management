@@ -12,13 +12,18 @@ import {StoreModule} from '@ngrx/store';
 import {reducers} from './core/reducers';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {FirebaseNgrxUserManagementModule} from '@xtream/firebase-ngrx-user-management';
+import {EffectsModule} from '@ngrx/effects';
+import { ToolbarContainerComponent } from './toolbar/toolbar-container/toolbar-container.component';
+import { ToolbarComponent } from './toolbar/toolbar/toolbar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     UserComponent,
-    LoginContainerComponent
+    LoginContainerComponent,
+    ToolbarContainerComponent,
+    ToolbarComponent
   ],
   imports: [
     CustomMaterialModule,
@@ -29,6 +34,7 @@ import {FirebaseNgrxUserManagementModule} from '@xtream/firebase-ngrx-user-manag
     AngularFireModule.initializeApp(environment.firebase),
     StoreModule.forRoot(reducers),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
+    EffectsModule.forRoot([])
   ],
   providers: [],
   bootstrap: [AppComponent]

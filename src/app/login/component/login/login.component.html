@@ -19,7 +19,7 @@
         <tr>
           <td>
             <mat-form-field>
-              <input matInput placeholder="Password" type="password" name="password">
+              <input matInput placeholder="Password" type="password" name="password" formControlName="password">
             </mat-form-field>
           </td>
         </tr>
@@ -32,6 +32,6 @@
     </form>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-raised-button color="primary">Login</button>
+    <button [disabled]="!loginForm.valid" mat-raised-button color="primary" (click)="login()">Login</button>
   </mat-card-actions>
 </mat-card>

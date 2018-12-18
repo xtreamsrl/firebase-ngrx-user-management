@@ -1,0 +1,7 @@
+<mat-card class="profile-card">
+  <mat-card-title>my profile</mat-card-title>
+  <mat-card-content>{{auth.user.email}} </mat-card-content>
+
+  <span *ngIf="auth.loggedIn" class="flexed">{{auth.user.email}}</span>
+
+</mat-card>

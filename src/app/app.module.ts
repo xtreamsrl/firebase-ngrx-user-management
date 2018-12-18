@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {LoginComponent} from './login/component/login/login.component';
-import {UserComponent} from './user/user.component';
+import {UserComponent} from './user/component/user.component';
 import {CustomMaterialModule} from './core/custom-material-module/custom-material.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AppRoutingModule} from './app-routing.module';
@@ -17,6 +17,7 @@ import { ToolbarContainerComponent } from './toolbar/toolbar-container/toolbar-c
 import { ToolbarComponent } from './toolbar/toolbar/toolbar.component';
 import { RegistrationComponent } from './registration/component/registration/registration.component';
 import { RegistrationContainerComponent } from './registration/container/registration-container/registration-container.component';
+import { UserContainerComponent } from './user/container/user-container/user-container.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { RegistrationContainerComponent } from './registration/container/registr
     ToolbarContainerComponent,
     ToolbarComponent,
     RegistrationComponent,
-    RegistrationContainerComponent
+    RegistrationContainerComponent,
+    UserContainerComponent
   ],
   imports: [
     CustomMaterialModule,

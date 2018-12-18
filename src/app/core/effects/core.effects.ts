@@ -16,7 +16,6 @@ export class CoreEffects {
   routeEffect = this.actions.pipe(
     ofType(AuthActions.AuthActionTypes.RegistrationSuccess),
     tap(() => {
-      console.debug('prova');
       this.router.navigate(['/user']);
     })
   );

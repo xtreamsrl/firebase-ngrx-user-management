@@ -196,7 +196,6 @@ export class DeleteAccountError implements Action {
 
 export class ResetAuthState implements Action {
   readonly type = AuthActionTypes.ResetAuthState;
-
 }
 
 export class RefreshToken implements Action {

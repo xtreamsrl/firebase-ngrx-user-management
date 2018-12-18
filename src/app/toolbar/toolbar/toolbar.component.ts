@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {UserState} from '../../../../projects/xtream/firebase-ngrx-user-management/src/public_api';
 
 @Component({
@@ -8,6 +8,7 @@ import {UserState} from '../../../../projects/xtream/firebase-ngrx-user-manageme
 })
 export class ToolbarComponent implements OnInit {
   @Input() auth: UserState;
+  @Output() logout = new EventEmitter();
 
   constructor() {
   }

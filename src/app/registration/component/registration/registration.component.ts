@@ -11,6 +11,7 @@ export class RegistrationComponent implements OnInit {
 
   public registrationForm: FormGroup;
   @Input() error: string;
+  @Input() success: boolean;
   @Output() googleLogin = new EventEmitter();
   @Output() facebookLogin = new EventEmitter();
   @Output() signUpWithCredentials = new EventEmitter<Credentials>();

@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthActions, AuthState} from '@xtream/firebase-ngrx-user-management';
-import {Store} from '@ngrx/store';
+import {select, Store} from '@ngrx/store';
+import {Observable} from 'rxjs';
+import {getAuthError, isAuthSuccess} from '@xtream/firebase-ngrx-user-management';
 
 @Component({
   selector: 'app-login-container',
@@ -8,8 +10,16 @@ import {Store} from '@ngrx/store';
   styleUrls: ['./login-container.component.css']
 })
 export class LoginContainerComponent implements OnInit {
+  public error$: Observable<{ code: string }>;
+  public success$: Observable<boolean>;
 
   constructor(private store: Store<AuthState>) {
+    this.error$ = this.store.pipe(
+      select(getAuthError)
+    );
+    this.success$ = this.store.pipe(
+      select(isAuthSuccess)
+    );
   }
 
   ngOnInit(): void {

@@ -37,4 +37,13 @@
   <mat-card-actions>
     <button mat-raised-button color="primary" routerLink="/registration">SIGN UP</button>
   </mat-card-actions>
+  <mat-card-footer>
+    <div class="error-message" *ngIf="error">
+      LOGIN ERROR: {{ error }}
+    </div>
+    <div class="success-message" *ngIf="success">
+      LOGIN SUCCESSFULLY DONE
+    </div>
+  </mat-card-footer>
+
 </mat-card>

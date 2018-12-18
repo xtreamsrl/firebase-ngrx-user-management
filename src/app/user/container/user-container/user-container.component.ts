@@ -31,4 +31,8 @@ export class UserContainerComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
+  onDeleteAccount(): void {
+    this.store.dispatch(new AuthActions.DeleteAccount());
+  }
+
 }

@@ -10,6 +10,7 @@ export class UserComponent implements OnInit {
   @Input() auth: UserState;
   @Output() sendMail = new EventEmitter();
   @Output() logout = new EventEmitter();
+  @Output() deleteAccount = new EventEmitter();
 
   constructor() {
   }

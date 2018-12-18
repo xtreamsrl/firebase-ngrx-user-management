@@ -37,7 +37,12 @@
   <mat-card-actions>
     <button [disabled]="!registrationForm.valid" mat-raised-button color="primary" (click)="signUp()">SIGN UP</button>
   </mat-card-actions>
-  <div *ngIf="error" class="error-message">
-    ERROR: {{ error }}
-  </div>
+  <mat-card-footer>
+    <div class="error-message" *ngIf="error">
+      LOGIN ERROR: {{ error }}
+    </div>
+    <div class="success-message" *ngIf="success">
+      LOGIN SUCCESSFULLY DONE
+    </div>
+  </mat-card-footer>
 </mat-card>

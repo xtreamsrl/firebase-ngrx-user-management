@@ -1,3 +1,9 @@
 <mat-toolbar color="primary">
   <span *ngIf="auth.loggedIn" class="flexed">{{auth.user.email}}</span>
+  <mat-card-actions style="margin: auto 10px;" *ngIf="auth.loggedIn">
+    <button mat-raised-button color="accent" routerLink="/user">PROFILE</button>
+  </mat-card-actions>
+  <mat-card-actions style="margin: auto 10px;" *ngIf="auth.loggedIn">
+    <button mat-raised-button color="warn" (click)="logout.emit()">LOGOUT</button>
+  </mat-card-actions>
 </mat-toolbar>

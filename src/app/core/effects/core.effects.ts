@@ -12,6 +12,7 @@ export class CoreEffects {
   constructor(private actions: Actions, private router: Router) {
   }
 
+  /*
   @Effect({dispatch: false})
   routeRegistrationEffect = this.actions.pipe(
     ofType(AuthActions.AuthActionTypes.RegistrationSuccess),
@@ -27,5 +28,5 @@ export class CoreEffects {
       this.router.navigate(['/user']);
     })
   );
-
+*/
 }

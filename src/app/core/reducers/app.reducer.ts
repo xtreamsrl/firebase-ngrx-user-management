@@ -1,4 +1,3 @@
-/// Reducer function
 import {State} from './index';
 import {Action} from '@ngrx/store';
 

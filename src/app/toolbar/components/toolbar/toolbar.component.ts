@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {UserState} from '../../../../projects/xtream/firebase-ngrx-user-management/src/public_api';
+import {UserState} from '../../../../../projects/xtream/firebase-ngrx-user-management/src/public_api';
 
 @Component({
   selector: 'app-toolbar',

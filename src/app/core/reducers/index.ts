@@ -1,6 +1,6 @@
-import {ActionReducer, ActionReducerMap, MetaReducer} from '@ngrx/store';
+import {ActionReducer, ActionReducerMap} from '@ngrx/store';
 import * as fromApp from './app.reducer';
-import {ActivatedRouteSnapshot, Params, RouterStateSnapshot} from '@angular/router';
+import {Params} from '@angular/router';
 
 export interface RouterStateUrl {
   url: string;

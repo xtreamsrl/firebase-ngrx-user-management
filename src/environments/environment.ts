@@ -11,7 +11,8 @@ export const environment = {
     projectId: 'fir-ngrx-sample',
     storageBucket: 'fir-ngrx-sample.appspot.com',
     messagingSenderId: '121802774076'
-  }
+  },
+  emailVerificationRedirectUrl: 'localhost:4200/login'
 };
 
 /*

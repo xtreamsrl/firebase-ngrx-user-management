@@ -6,6 +6,7 @@ import {State} from '../../../../../projects/xtream/firebase-ngrx-user-managemen
 import {AuthActions} from '@xtream/firebase-ngrx-user-management';
 import {Actions} from '@ngrx/effects';
 import {Router} from '@angular/router';
+import {environment} from '../../../../environments/environment';
 
 @Component({
   selector: 'app-user-container',
@@ -23,7 +24,7 @@ export class UserContainerComponent implements OnInit {
   }
 
   sendVerificationEmail(): void {
-    this.store.dispatch(new AuthActions.SendVerificationEmail({redirectUrl: '/'}));
+    this.store.dispatch(new AuthActions.SendVerificationEmail({redirectUrl: environment.emailVerificationRedirectUrl}));
   }
 
   onLogout(): void {

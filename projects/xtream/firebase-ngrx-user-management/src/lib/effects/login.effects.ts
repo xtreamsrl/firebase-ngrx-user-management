@@ -118,6 +118,17 @@ export class LoginEffects {
     })
   );
 
+  @Effect()
+  onDeleteNotVerifiedAccount$: Observable<any> = this.actions$.pipe(
+    ofType<userActions.DeleteAccount>(userActions.AuthActionTypes.DeleteAccount),
+    switchMap(() => {
+      return from(this.afAuth.auth.currentUser.delete()).pipe(
+        map(() => new userActions.DeleteAccountSuccess()),
+        catchError(error => of(new userActions.DeleteAccountError(error)))
+      );
+    })
+  );
+
   @Effect({dispatch: false})
   refreshToken$ = this.actions$.pipe(
     ofType(userActions.AuthActionTypes.RefreshToken),

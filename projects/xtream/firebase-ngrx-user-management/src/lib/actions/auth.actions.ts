@@ -159,7 +159,6 @@ export class SendVerificationEmail implements Action {
 
 export class VerificationEmailError implements Action {
   readonly type = AuthActionTypes.VerificationEmailError;
-
   constructor(public payload: { code: string, message: string }) {
   }
 }

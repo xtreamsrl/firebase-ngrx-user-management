@@ -1,7 +1,13 @@
 <mat-card class="profile-card">
   <mat-card-title>my profile</mat-card-title>
-  <mat-card-content>{{auth.user.email}} </mat-card-content>
+  <mat-card-content>mail: {{auth.user.email}}</mat-card-content>
+  <mat-card-content *ngIf="auth.user.displayName">name: {{auth.user.displayName}}</mat-card-content>
+  <mat-card-content>e-mail verified: {{auth.user.emailVerified}}
+    <button [disabled]="auth.user.emailVerified" mat-raised-button color="primary" (click)="sendMail.emit()">Send mail</button>
+  </mat-card-content>
+  <mat-card-content>
+    <button mat-raised-button color="primary" (click)="logout.emit()">LOGOUT</button>
+  </mat-card-content>
 
-  <span *ngIf="auth.loggedIn" class="flexed">{{auth.user.email}}</span>
 
 </mat-card>

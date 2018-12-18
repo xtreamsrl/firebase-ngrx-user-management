@@ -1,1 +1,1 @@
-<app-user [auth]="auth$ | async"></app-user>
+<app-user [auth]="auth$ | async" (sendMail)="sendVerificationEmail()" (logout)="onLogout()"></app-user>

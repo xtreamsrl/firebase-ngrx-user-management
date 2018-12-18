@@ -13,8 +13,16 @@ export class CoreEffects {
   }
 
   @Effect({dispatch: false})
-  routeEffect = this.actions.pipe(
+  routeRegistrationEffect = this.actions.pipe(
     ofType(AuthActions.AuthActionTypes.RegistrationSuccess),
+    tap(() => {
+      this.router.navigate(['/user']);
+    })
+  );
+
+  @Effect({dispatch: false})
+  routeAuthenticationEffect = this.actions.pipe(
+    ofType(AuthActions.AuthActionTypes.Authenticated),
     tap(() => {
       this.router.navigate(['/user']);
     })

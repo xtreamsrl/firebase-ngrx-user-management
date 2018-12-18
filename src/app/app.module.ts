@@ -13,11 +13,12 @@ import {reducers} from './core/reducers';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {FirebaseNgrxUserManagementModule} from '@xtream/firebase-ngrx-user-management';
 import {EffectsModule} from '@ngrx/effects';
-import { ToolbarContainerComponent } from './toolbar/toolbar-container/toolbar-container.component';
-import { ToolbarComponent } from './toolbar/toolbar/toolbar.component';
-import { RegistrationComponent } from './registration/component/registration/registration.component';
-import { RegistrationContainerComponent } from './registration/container/registration-container/registration-container.component';
-import { UserContainerComponent } from './user/container/user-container/user-container.component';
+import {ToolbarContainerComponent} from './toolbar/toolbar-container/toolbar-container.component';
+import {ToolbarComponent} from './toolbar/toolbar/toolbar.component';
+import {RegistrationComponent} from './registration/component/registration/registration.component';
+import {RegistrationContainerComponent} from './registration/container/registration-container/registration-container.component';
+import {UserContainerComponent} from './user/container/user-container/user-container.component';
+import {CoreEffects} from './core/effects/core.effects';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,7 @@ import { UserContainerComponent } from './user/container/user-container/user-con
     FirebaseNgrxUserManagementModule,
     AngularFireModule.initializeApp(environment.firebase),
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([]),
+    EffectsModule.forRoot([CoreEffects]),
     !environment.production ? StoreDevtoolsModule.instrument() : []
   ],
   providers: [],

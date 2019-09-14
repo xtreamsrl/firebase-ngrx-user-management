@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import {from, Observable, of} from 'rxjs';
 import {Action} from '@ngrx/store';
@@ -7,8 +7,12 @@ import {catchError, exhaustMap, map, mapTo} from 'rxjs/operators';
 import {AngularFireAuth} from '@angular/fire/auth';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
+import {Facebook, FacebookLoginResponse} from '@ionic-native/facebook/ngx';
+import {GooglePlus} from '@ionic-native/google-plus/ngx';
 import EmailAuthProvider = firebase.auth.EmailAuthProvider;
 import ConfirmationResult = firebase.auth.ConfirmationResult;
+import {Platform} from '@ionic/angular';
+import {FIREBASE_USER_MANAGEMENT_CONFIG, FirebaseUserManagementConfig} from '../config';
 
 @Injectable()
 export class ProvidersManagementEffects {
@@ -143,8 +147,16 @@ export class ProvidersManagementEffects {
   private phoneNumberConfirmation: ConfirmationResult;
 
   private doLinkToGoogleProvider(): Promise<any> {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    return this.afAuth.auth.currentUser.linkWithPopup(provider);
+    const loginP = this.gplus.login({
+      webClientId: this.config.googleWebClientId,
+      offline: true,
+      scopes: 'profile email'
+    });
+    loginP.catch(console.error);
+    return loginP.then(gplusUser => {
+      console.debug('Logging in into googlw mobile', gplusUser);
+      return this.afAuth.auth.currentUser.linkWithCredential(firebase.auth.GoogleAuthProvider.credential(gplusUser.idToken));
+    });
   }
 
   private doUnlinkToGoogleProvider(): Promise<any> {
@@ -153,8 +165,11 @@ export class ProvidersManagementEffects {
   }
 
   private doLinkToFacebookProvider(): Promise<any> {
-    const provider = new firebase.auth.FacebookAuthProvider();
-    return this.afAuth.auth.currentUser.linkWithPopup(provider);
+    return this.fb.login(['public_profile', 'email', 'user_friends', 'user_birthday'])
+      .then((res: FacebookLoginResponse) => {
+        const facebookCredential = firebase.auth.FacebookAuthProvider.credential(res.authResponse.accessToken);
+        return this.afAuth.auth.currentUser.linkWithCredential(facebookCredential);
+      });
   }
 
   private doUnlinkToFacebookProvider(): Promise<any> {
@@ -225,8 +240,10 @@ export class ProvidersManagementEffects {
   }
 
   constructor(private actions$: Actions,
-              private afAuth: AngularFireAuth) {
-
+              private fb: Facebook,
+              private gplus: GooglePlus,
+              private afAuth: AngularFireAuth,
+              @Inject(FIREBASE_USER_MANAGEMENT_CONFIG) private  config: FirebaseUserManagementConfig) {
   }
 
 }

@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@ngrx/effects';
 
 import {AngularFireAuth} from '@angular/fire/auth';
@@ -9,8 +9,11 @@ import {from, Observable, of} from 'rxjs';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import {User} from '../models/auth.model';
-import UserCredential = firebase.auth.UserCredential;
 import {ProvidersManagementActionsUnion, SetProviders} from '../actions/providers-management.actions';
+import {Facebook, FacebookLoginResponse} from '@ionic-native/facebook/ngx';
+import {GooglePlus} from '@ionic-native/google-plus/ngx';
+import {Platform} from '@ionic/angular';
+import {FIREBASE_USER_MANAGEMENT_CONFIG, FirebaseUserManagementConfig} from '../config';
 
 export type Action = AuthActions.AuthActionsUnion | ProvidersManagementActionsUnion;
 
@@ -18,15 +21,20 @@ export type Action = AuthActions.AuthActionsUnion | ProvidersManagementActionsUn
 export class RegistrationEffects {
 
   constructor(private actions: Actions,
-              private afAuth: AngularFireAuth) {
+              private fb: Facebook,
+              private gplus: GooglePlus,
+              private platform: Platform,
+              private afAuth: AngularFireAuth,
+              @Inject(FIREBASE_USER_MANAGEMENT_CONFIG) private  config: FirebaseUserManagementConfig) {
   }
+
 
   @Effect()
   googleSignUp: Observable<Action> = this.actions.pipe(
     ofType(AuthActions.AuthActionTypes.GoogleRegistration),
     map((action: AuthActions.GoogleRegistration) => action.payload),
     exhaustMap(payload => {
-      return from(this.doGoogleRegistration()).pipe(
+      return from(this.doGoogleLogin()).pipe(
         switchMap(credential => {
           console.debug('credential', credential);
           const authData = credential.user;
@@ -34,7 +42,10 @@ export class RegistrationEffects {
           const user = new User(authData.uid, authData.displayName, authData.email, authData.phoneNumber, photoUrl, authData.emailVerified);
           return from([new SetProviders({google: true}), new AuthActions.RegistrationSuccess({user})]);
         }),
-        catchError(error => of(new AuthActions.AuthError(error)))
+        catchError(error => {
+          console.error(error);
+          return of(new AuthActions.AuthError(error));
+        })
       );
     })
   );
@@ -44,7 +55,7 @@ export class RegistrationEffects {
     ofType(AuthActions.AuthActionTypes.FacebookRegistration),
     map((action: AuthActions.FacebookRegistration) => action.payload),
     exhaustMap(payload => {
-      return from(this.doFacebookRegistration()).pipe(
+      return from(this.doFacebookLogin()).pipe(
         switchMap(credential => {
           console.debug('facebookSignUp', credential);
           const authData = credential.user;
@@ -94,20 +105,51 @@ export class RegistrationEffects {
     })
   );
 
-  private doFacebookRegistration(): Promise<UserCredential> {
-    const provider = new firebase.auth.FacebookAuthProvider();
-    return this.afAuth.auth.signInWithPopup(provider);
+  private doFacebookLogin(): Promise<firebase.auth.UserCredential> {
+    if (this.platform.is('cordova')) {
+      return this.doFacebookLoginMobile();
+    } else {
+      const provider = new firebase.auth.FacebookAuthProvider();
+      return this.afAuth.auth.signInWithPopup(provider);
+    }
   }
 
-  private doGoogleRegistration(): Promise<UserCredential> {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    provider.setCustomParameters({
-      prompt: 'select_account'
+  private doFacebookLoginMobile(): Promise<firebase.auth.UserCredential> {
+    return this.fb.login(['public_profile', 'email', 'user_friends', 'user_birthday'])
+      .then((res: FacebookLoginResponse) => {
+        const facebookCredential = firebase.auth.FacebookAuthProvider.credential(res.authResponse.accessToken);
+        return firebase.auth().signInAndRetrieveDataWithCredential(facebookCredential);
+      });
+  }
+
+  private doGoogleLogin(): Promise<firebase.auth.UserCredential> {
+    if (this.platform.is('cordova')) {
+      return this.doGoogleLoginMobile();
+    } else {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      provider.setCustomParameters({
+        prompt: 'select_account'
+      });
+      return this.afAuth.auth.signInWithPopup(provider);
+    }
+  }
+
+  private doGoogleLoginMobile(): Promise<firebase.auth.UserCredential> {
+    console.debug('Logging in into googlw mobile');
+    const loginP = this.gplus.login({
+      webClientId: this.config.googleWebClientId,
+      offline: true,
+      scopes: 'profile email'
     });
-    return this.afAuth.auth.signInWithPopup(provider);
+    loginP.catch(console.error);
+    return loginP.then(gplusUser => {
+      console.debug('Logging in into googlw mobile', gplusUser);
+      return this.afAuth.auth.signInAndRetrieveDataWithCredential(firebase.auth.GoogleAuthProvider.credential(gplusUser.idToken));
+    });
+
   }
 
-  private doSignUpWithCredentials(credentials: { email: string, password: string }): Promise<UserCredential> {
+  private doSignUpWithCredentials(credentials: {email: string, password: string}): Promise<firebase.auth.UserCredential> {
     return this.afAuth.auth.createUserWithEmailAndPassword(credentials.email, credentials.password);
   }
 }

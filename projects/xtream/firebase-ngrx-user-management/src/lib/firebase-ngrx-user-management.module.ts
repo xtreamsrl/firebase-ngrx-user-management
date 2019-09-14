@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {ModuleWithProviders, NgModule} from '@angular/core';
 import {EffectsModule} from '@ngrx/effects';
 import {StoreModule} from '@ngrx/store';
 
@@ -11,6 +11,7 @@ import {ReAuthenticationEffects} from './effects/re-authentication-effects.servi
 import {ProvidersManagementEffects} from './effects/providers-management.effects';
 import {PasswordManagementEffects} from './effects/password-management.effects';
 import {CustomEmailHandlerEffects} from './effects/custom-email-handler.effects';
+import {FIREBASE_USER_MANAGEMENT_CONFIG, FirebaseUserManagementConfig} from './config';
 
 @NgModule({
   imports: [
@@ -33,4 +34,16 @@ import {CustomEmailHandlerEffects} from './effects/custom-email-handler.effects'
 })
 export class FirebaseNgrxUserManagementModule {
 
+  static forRoot(config: FirebaseUserManagementConfig): ModuleWithProviders {
+
+    return {
+      ngModule: FirebaseNgrxUserManagementModule,
+      providers: [
+        {
+          provide: FIREBASE_USER_MANAGEMENT_CONFIG, useValue: config
+        }
+      ]
+    };
+
+  }
 }

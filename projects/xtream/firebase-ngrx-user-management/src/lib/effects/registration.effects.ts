@@ -3,7 +3,7 @@ import {Actions, Effect, ofType} from '@ngrx/effects';
 
 import {AngularFireAuth} from '@angular/fire/auth';
 
-import {catchError, exhaustMap, map, switchMap, tap} from 'rxjs/operators';
+import {catchError, exhaustMap, map, switchMap} from 'rxjs/operators';
 import {AuthActions} from '../actions';
 import {from, Observable, of} from 'rxjs';
 import * as firebase from 'firebase/app';
@@ -11,7 +11,6 @@ import 'firebase/auth';
 import {User} from '../models/auth.model';
 import UserCredential = firebase.auth.UserCredential;
 import {ProvidersManagementActionsUnion, SetProviders} from '../actions/providers-management.actions';
-import {Router} from '@angular/router';
 
 export type Action = AuthActions.AuthActionsUnion | ProvidersManagementActionsUnion;
 
@@ -19,8 +18,7 @@ export type Action = AuthActions.AuthActionsUnion | ProvidersManagementActionsUn
 export class RegistrationEffects {
 
   constructor(private actions: Actions,
-              private afAuth: AngularFireAuth,
-              private router: Router) {
+              private afAuth: AngularFireAuth) {
   }
 
   @Effect()

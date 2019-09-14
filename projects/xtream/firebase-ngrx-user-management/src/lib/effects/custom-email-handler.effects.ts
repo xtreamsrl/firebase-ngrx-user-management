@@ -45,7 +45,7 @@ export class CustomEmailHandlerEffects {
     map(action => action.payload),
     switchMap(payload => {
       return from(this.afAuth.auth.confirmPasswordReset(payload.actionCode, payload.newPassword)).pipe(
-        switchMap((email: string) => {
+        switchMap(() => {
           return of(new customEmailHandlerActions.ResetPasswordSuccess());
         }),
         catchError(error => of(new customEmailHandlerActions.ResetPasswordError(error)))

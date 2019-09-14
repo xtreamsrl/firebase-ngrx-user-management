@@ -159,6 +159,7 @@ export class SendVerificationEmail implements Action {
 
 export class VerificationEmailError implements Action {
   readonly type = AuthActionTypes.VerificationEmailError;
+
   constructor(public payload: { code: string, message: string }) {
   }
 }
@@ -195,6 +196,7 @@ export class DeleteAccountError implements Action {
 
 export class ResetAuthState implements Action {
   readonly type = AuthActionTypes.ResetAuthState;
+
 }
 
 export class RefreshToken implements Action {

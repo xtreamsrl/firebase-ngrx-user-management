@@ -122,7 +122,7 @@
         }
       }
     },
-    "@xtream/firebase-ngrx-user-management": {
+    "@xtream/ionic-firebase-ngrx-user-management": {
       "root": "projects/xtream/firebase-ngrx-user-management",
       "sourceRoot": "projects/xtream/firebase-ngrx-user-management/src",
       "projectType": "library",

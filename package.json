@@ -1,5 +1,5 @@
 {
-  "name": "firebase-ngrx-user-management-example",
+  "name": "ionic-firebase-ngrx-user-management-example",
   "version": "0.0.0-development",
   "scripts": {
     "ng": "ng",
@@ -8,7 +8,7 @@
     "test": "npx ng test",
     "lint": "npx ng lint",
     "e2e": "npx ng e2e",
-    "build_lib": "npx ng build @xtream/firebase-ngrx-user-management",
+    "build_lib": "npx ng build @xtream/ionic-firebase-ngrx-user-management",
     "copy-license": "copy .\\LICENSE .\\dist\\xtream\\firebase-ngrx-user-management",
     "copy-readme": "copy .\\README.md .\\dist\\xtream\\firebase-ngrx-user-management",
     "copy-files": "npm run copy-license && npm run copy-readme",
@@ -31,6 +31,10 @@
     "@angular/platform-browser": "^7.0.0",
     "@angular/platform-browser-dynamic": "^7.0.0",
     "@angular/router": "^7.0.0",
+    "@ionic-native/core": "^5.11.0",
+    "@ionic-native/facebook": "^5.11.0",
+    "@ionic-native/google-plus": "^5.11.0",
+    "@ionic/angular": "^4.8.0",
     "@ngrx/effects": "^7.0.0",
     "@ngrx/entity": "^7.0.0",
     "@ngrx/store": "^7.0.0",

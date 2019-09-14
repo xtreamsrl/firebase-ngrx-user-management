@@ -24,6 +24,7 @@
     "@angular/core": "^7.0.0",
     "@angular/fire": "^5.0.2",
     "@angular/platform-browser-dynamic": "^7.0.0",
+    "@ionic-native/core": "^5.11.0",
     "@ionic-native/facebook": "^5.11.0",
     "@ionic-native/google-plus": "^5.11.0",
     "@ionic/angular": "^4.8.0",

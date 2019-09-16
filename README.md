@@ -4,14 +4,14 @@ This library allows to easily manage user auth with ngrx and firebase.
 Most of auth flows have bben wrapped in ngrx effect and can be triggered dispatching specifica actions.
 ## Install
 
-`npm install --save @xtream/firebase-ngrx-user-management`
+`npm install --save @xtream/ionic-firebase-ngrx-user-management`
 ## Usage
 The library acts as a common NgRx feature module. You can find it under the "auth" key in the state tree.
 
 ### Import
 
 ```ts
-import {FirebaseNgrxUserManagementModule} from '@xtream/firebase-ngrx-user-management';
+import {FirebaseNgrxUserManagementModule} from '@xtream/ionic-firebase-ngrx-user-management';
 
 @NgModule({
     ...
@@ -29,7 +29,7 @@ export class AppModule { }
 In order to try to restore the user and verify if he is logged modify the `app.component.ts` in this way:
 
 ```ts
-import {AuthActions} from '@xtream/firebase-ngrx-user-management';
+import {AuthActions} from '@xtream/ionic-firebase-ngrx-user-management';
  
 export class AppComponent implements OnInit {
 ...

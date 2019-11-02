@@ -1,6 +1,6 @@
 {
   "name": "@xtream/ionic-firebase-ngrx-user-management",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "User auth management for ionic powered by NgRx and Firebase",
   "homepage": "https://github.com/xtreamsrl/firebase-ngrx-user-management#readme",
   "repository": {

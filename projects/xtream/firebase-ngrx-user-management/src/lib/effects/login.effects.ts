@@ -147,7 +147,7 @@ export class LoginEffects {
     return this.fb.login(['public_profile', 'email'])
       .then((res: FacebookLoginResponse) => {
         const facebookCredential = firebase.auth.FacebookAuthProvider.credential(res.authResponse.accessToken);
-        return firebase.auth().signInWithCredential(facebookCredential);
+        return this.afAuth.auth.signInWithCredential(facebookCredential);
       });
   }
 

@@ -20,17 +20,17 @@
     "url": "https://github.com/xtreamsrl/firebase-ngrx-user-management/issues"
   },
   "peerDependencies": {
-    "@angular/common": "^8.0.0",
-    "@angular/core": "^8.0.0",
+    "@angular/common": "^9.0.7",
+    "@angular/core": "^9.0.7",
     "@angular/fire": "^5.2.1",
-    "@angular/platform-browser-dynamic": "^8.0.0",
-    "@ngrx/effects": "^8.0.0",
-    "@ngrx/entity": "^8.0.0",
-    "@ngrx/store": "^8.0.0",
+    "@angular/platform-browser-dynamic": "^9.0.7",
+    "@ngrx/effects": "^9.0.0",
+    "@ngrx/entity": "^9.0.0",
+    "@ngrx/store": "^9.0.0",
     "core-js": "^3.2.1",
     "firebase": "^6.6.1",
     "rxjs": "^6.0.0",
-    "zone.js": "^0.10.2"
+    "zone.js": "~0.10.2"
   },
   "devDependencies": {
   },

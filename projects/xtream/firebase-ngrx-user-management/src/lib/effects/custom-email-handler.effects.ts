@@ -7,8 +7,6 @@ import {Action} from '@ngrx/store';
 import * as customEmailHandlerActions from '../actions/custom-email-handler.actions';
 import {catchError, map, mapTo, switchMap} from 'rxjs/operators';
 
-export type Action = customEmailHandlerActions.CustomEmailHandlerActionsUnion;
-
 @Injectable()
 export class CustomEmailHandlerEffects {
 

@@ -16,7 +16,7 @@ export class CustomEmailHandlerEffects {
     ofType<customEmailHandlerActions.VerifyEmailAddress>(customEmailHandlerActions.CustomEmailHandlerActionTypes.VerifyEmailAddress),
     map(action => action.payload),
     switchMap(payload => {
-      return from(this.afAuth.auth.applyActionCode(payload.actionCode).then(async res => {
+      return from(this.afAuth.applyActionCode(payload.actionCode).then(async res => {
       })).pipe(
         mapTo(new customEmailHandlerActions.VerifyEmailAddressSuccess()),
         catchError(error => of(new customEmailHandlerActions.VerifyEmailAddressError(error)))
@@ -29,9 +29,12 @@ export class CustomEmailHandlerEffects {
     ofType<customEmailHandlerActions.VerifyPasswordResetCode>(customEmailHandlerActions.CustomEmailHandlerActionTypes.VerifyPasswordResetCode),
     map(action => action.payload),
     switchMap(payload => {
-      return from(this.afAuth.auth.verifyPasswordResetCode(payload.actionCode)).pipe(
+      return from(this.afAuth.verifyPasswordResetCode(payload.actionCode)).pipe(
         switchMap((email: string) => {
-          return of(new customEmailHandlerActions.VerifyPasswordResetCodeSuccess({email, actionCode: payload.actionCode}));
+          return of(new customEmailHandlerActions.VerifyPasswordResetCodeSuccess({
+            email,
+            actionCode: payload.actionCode
+          }));
         }),
         catchError(error => of(new customEmailHandlerActions.VerifyPasswordResetCodeError(error)))
       );
@@ -43,7 +46,7 @@ export class CustomEmailHandlerEffects {
     ofType<customEmailHandlerActions.ResetPassword>(customEmailHandlerActions.CustomEmailHandlerActionTypes.ResetPassword),
     map(action => action.payload),
     switchMap(payload => {
-      return from(this.afAuth.auth.confirmPasswordReset(payload.actionCode, payload.newPassword)).pipe(
+      return from(this.afAuth.confirmPasswordReset(payload.actionCode, payload.newPassword)).pipe(
         switchMap(() => {
           return of(new customEmailHandlerActions.ResetPasswordSuccess());
         }),
@@ -57,10 +60,13 @@ export class CustomEmailHandlerEffects {
     ofType<customEmailHandlerActions.CheckActionCode>(customEmailHandlerActions.CustomEmailHandlerActionTypes.CheckActionCode),
     map(action => action.payload),
     switchMap(payload => {
-      return from(this.afAuth.auth.checkActionCode(payload.actionCode)).pipe(
+      return from(this.afAuth.checkActionCode(payload.actionCode)).pipe(
         map(info => info['data']['email']),
         switchMap((restoredEmail: string) => {
-          return of(new customEmailHandlerActions.CheckActionCodeSuccess({actionCode: payload.actionCode, restoredEmail}));
+          return of(new customEmailHandlerActions.CheckActionCodeSuccess({
+            actionCode: payload.actionCode,
+            restoredEmail
+          }));
         }),
         catchError(error => of(new customEmailHandlerActions.CheckActionCodeError(error)))
       );
@@ -72,7 +78,7 @@ export class CustomEmailHandlerEffects {
     ofType<customEmailHandlerActions.RecoverEmail>(customEmailHandlerActions.CustomEmailHandlerActionTypes.RecoverEmail),
     map(action => action.payload),
     switchMap(payload => {
-      return from(this.afAuth.auth.applyActionCode(payload.actionCode)).pipe(
+      return from(this.afAuth.applyActionCode(payload.actionCode)).pipe(
         switchMap(() => {
           return of(new customEmailHandlerActions.RecoverEmailSuccess());
         }),

@@ -7,17 +7,17 @@ import {AngularFireAuth} from '@angular/fire/auth';
 import {catchError, exhaustMap, map, switchMap, take, tap} from 'rxjs/operators';
 import * as userActions from '../actions/auth.actions';
 import {from, Observable, of, zip} from 'rxjs';
-import * as firebase from 'firebase/app';
+import {auth} from 'firebase/app';
 import 'firebase/auth';
 import {SetProviders} from '../actions/providers-management.actions';
 import {Action} from '@ngrx/store';
-import UserCredential = firebase.auth.UserCredential;
+import UserCredential = auth.UserCredential;
 
 const PROVIDERS_MAP = {};
-PROVIDERS_MAP[firebase.auth.FacebookAuthProvider.FACEBOOK_SIGN_IN_METHOD] = 'facebook';
-PROVIDERS_MAP[firebase.auth.GoogleAuthProvider.GOOGLE_SIGN_IN_METHOD] = 'google';
-PROVIDERS_MAP[firebase.auth.EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD] = 'password';
-PROVIDERS_MAP[firebase.auth.PhoneAuthProvider.PHONE_SIGN_IN_METHOD] = 'phone';
+PROVIDERS_MAP[auth.FacebookAuthProvider.FACEBOOK_SIGN_IN_METHOD] = 'facebook';
+PROVIDERS_MAP[auth.GoogleAuthProvider.GOOGLE_SIGN_IN_METHOD] = 'google';
+PROVIDERS_MAP[auth.EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD] = 'password';
+PROVIDERS_MAP[auth.PhoneAuthProvider.PHONE_SIGN_IN_METHOD] = 'phone';
 
 @Injectable()
 export class LoginEffects {
@@ -111,7 +111,7 @@ export class LoginEffects {
     ofType(userActions.AuthActionTypes.Logout),
     map((action: userActions.Logout) => action.payload),
     exhaustMap(payload => {
-      return from(this.afAuth.auth.signOut());
+      return from(this.afAuth.signOut());
     }),
     map(authData => {
       return new userActions.NotAuthenticated();
@@ -122,7 +122,7 @@ export class LoginEffects {
   onDeleteNotVerifiedAccount$: Observable<any> = this.actions$.pipe(
     ofType<userActions.DeleteAccount>(userActions.AuthActionTypes.DeleteAccount),
     switchMap(() => {
-      return from(this.afAuth.auth.currentUser.delete()).pipe(
+      return this.afAuth.user.pipe(tap(user => user.delete())).pipe(
         map(() => new userActions.DeleteAccountSuccess()),
         catchError(error => of(new userActions.DeleteAccountError(error)))
       );
@@ -132,7 +132,7 @@ export class LoginEffects {
   @Effect({dispatch: false})
   refreshToken$ = this.actions$.pipe(
     ofType(userActions.AuthActionTypes.RefreshToken),
-    tap(action => this.afAuth.auth.currentUser.getIdToken(true))
+    tap(action => this.afAuth.user.pipe(tap(user => user.getIdToken(true))))
   );
 
   constructor(private actions$: Actions,
@@ -140,26 +140,26 @@ export class LoginEffects {
   }
 
   private doFacebookLogin(): Promise<UserCredential> {
-    const provider = new firebase.auth.FacebookAuthProvider();
-    return this.afAuth.auth.signInWithPopup(provider);
+    const provider = new auth.FacebookAuthProvider();
+    return this.afAuth.signInWithPopup(provider);
   }
 
   private doGoogleLogin(): Promise<UserCredential> {
-    const provider = new firebase.auth.GoogleAuthProvider();
+    const provider = new auth.GoogleAuthProvider();
     provider.setCustomParameters({
       prompt: 'select_account'
     });
-    return this.afAuth.auth.signInWithPopup(provider);
+    return this.afAuth.signInWithPopup(provider);
   }
 
   private doLoginWithCredentials(credentials: { email: string, password: string, remember?: boolean }): Promise<UserCredential> {
     if (credentials.remember) {
-      return this.afAuth.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(() => {
-        return this.afAuth.auth.signInWithEmailAndPassword(credentials.email, credentials.password);
+      return this.afAuth.setPersistence(auth.Auth.Persistence.LOCAL).then(() => {
+        return this.afAuth.signInWithEmailAndPassword(credentials.email, credentials.password);
       });
     } else {
-      return this.afAuth.auth.setPersistence(firebase.auth.Auth.Persistence.SESSION).then(() => {
-        return this.afAuth.auth.signInWithEmailAndPassword(credentials.email, credentials.password);
+      return this.afAuth.setPersistence(auth.Auth.Persistence.SESSION).then(() => {
+        return this.afAuth.signInWithEmailAndPassword(credentials.email, credentials.password);
       });
     }
   }

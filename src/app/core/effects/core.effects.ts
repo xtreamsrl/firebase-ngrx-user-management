@@ -12,11 +12,12 @@ export class CoreEffects {
   constructor(private actions: Actions, private router: Router) {
   }
 
-  /*
+
   @Effect({dispatch: false})
   routeRegistrationEffect = this.actions.pipe(
     ofType(AuthActions.AuthActionTypes.RegistrationSuccess),
-    tap(() => {
+    tap((payload) => {
+      console.log(payload);
       this.router.navigate(['/user']);
     })
   );
@@ -24,9 +25,10 @@ export class CoreEffects {
   @Effect({dispatch: false})
   routeAuthenticationEffect = this.actions.pipe(
     ofType(AuthActions.AuthActionTypes.Authenticated),
-    tap(() => {
+    tap((payload) => {
+      console.log(payload);
       this.router.navigate(['/user']);
     })
   );
-*/
+
 }

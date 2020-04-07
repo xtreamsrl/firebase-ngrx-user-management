@@ -22,13 +22,13 @@
   "peerDependencies": {
     "@angular/common": "^9.0.7",
     "@angular/core": "^9.0.7",
-    "@angular/fire": "^5.2.1",
+    "@angular/fire": "^6.0.0-rc.1",
     "@angular/platform-browser-dynamic": "^9.0.7",
     "@ngrx/effects": "^9.0.0",
     "@ngrx/entity": "^9.0.0",
     "@ngrx/store": "^9.0.0",
     "core-js": "^3.2.1",
-    "firebase": "^6.6.1",
+    "firebase": "^7.8.0",
     "rxjs": "^6.0.0",
     "zone.js": "~0.10.2"
   },

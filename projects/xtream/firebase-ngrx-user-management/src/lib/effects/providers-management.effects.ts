@@ -3,12 +3,11 @@ import {Actions, Effect, ofType} from '@ngrx/effects';
 import {from, Observable, of} from 'rxjs';
 import {Action} from '@ngrx/store';
 import {ProvidersManagementActions} from '../actions';
-import {catchError, exhaustMap, map, mapTo} from 'rxjs/operators';
+import {catchError, exhaustMap, map, mapTo, take} from 'rxjs/operators';
 import {AngularFireAuth} from '@angular/fire/auth';
-import * as firebase from 'firebase/app';
-import 'firebase/auth';
-import EmailAuthProvider = firebase.auth.EmailAuthProvider;
-import ConfirmationResult = firebase.auth.ConfirmationResult;
+import {auth, User} from 'firebase/app';
+import EmailAuthProvider = auth.EmailAuthProvider;
+import ConfirmationResult = auth.ConfirmationResult;
 
 @Injectable()
 export class ProvidersManagementEffects {
@@ -34,32 +33,6 @@ export class ProvidersManagementEffects {
       );
     })
   );
-
-  @Effect()
-  linkToCredentialsAccount$: Observable<Action> = this.actions$.pipe(
-    ofType<ProvidersManagementActions.LinkCredentialAccount>(ProvidersManagementActions.ProvidersManagementActionTypes.LinkCredentialAccount),
-    map(action => action.payload),
-    exhaustMap(payload => {
-      return from(this.reAuthenticate().then(async res => {
-        await this.doLinkToCredentials(this.afAuth.auth.currentUser.email, payload.password);
-      })).pipe(
-        mapTo(new ProvidersManagementActions.LinkSuccess({provider: 'password'})),
-        catchError(error => {
-          if (error.code === 'auth/popup-blocked') {
-            return from(this.reAuthenticateWithRedirect().then(async res => {
-              await this.doLinkToCredentials(this.afAuth.auth.currentUser.email, payload.password);
-            })).pipe(
-              mapTo(new ProvidersManagementActions.LinkSuccess({provider: 'password'})),
-              catchError(error1 => of(new ProvidersManagementActions.LinkError(error1)))
-            );
-          } else {
-            return of(new ProvidersManagementActions.LinkError(error));
-          }
-        })
-      );
-    })
-  );
-
   @Effect()
   unlinkGoogleAccount$: Observable<Action> = this.actions$.pipe(
     ofType<ProvidersManagementActions.UnlinkGoogleAccount>(ProvidersManagementActions.ProvidersManagementActionTypes.UnlinkGoogleAccount),
@@ -70,7 +43,6 @@ export class ProvidersManagementEffects {
       );
     })
   );
-
   @Effect()
   unlinkFacebookAccount$: Observable<Action> = this.actions$.pipe(
     ofType<ProvidersManagementActions.UnlinkFacebookAccount>(ProvidersManagementActions.ProvidersManagementActionTypes.UnlinkFacebookAccount),
@@ -81,7 +53,6 @@ export class ProvidersManagementEffects {
       );
     })
   );
-
   @Effect()
   unlinkCredentialsAccount$: Observable<Action> = this.actions$.pipe(
     ofType<ProvidersManagementActions.UnlinkCredentialAccount>(ProvidersManagementActions.ProvidersManagementActionTypes.UnlinkCredentialAccount),
@@ -94,7 +65,6 @@ export class ProvidersManagementEffects {
       );
     })
   );
-
   @Effect()
   unlinkPhone$: Observable<Action> = this.actions$.pipe(
     ofType<ProvidersManagementActions.UnlinkPhoneNumber>(ProvidersManagementActions.ProvidersManagementActionTypes.UnlinkPhoneNumber),
@@ -105,14 +75,50 @@ export class ProvidersManagementEffects {
       );
     })
   );
-
+  private phoneNumberConfirmation: ConfirmationResult;
+  @Effect()
+  verifyCode$: Observable<Action> = this.actions$.pipe(
+    ofType<ProvidersManagementActions.VerifyPhoneNumber>(ProvidersManagementActions.ProvidersManagementActionTypes.VerifyPhoneNumber),
+    map(action => action.payload),
+    exhaustMap(payload => {
+      return from(this.phoneNumberConfirmation.confirm(payload.code)).pipe(
+        mapTo(new ProvidersManagementActions.LinkSuccess({provider: 'phone'})),
+        catchError(error => of(new ProvidersManagementActions.LinkError(error)))
+      );
+    })
+  );
+  private user: User;
+  @Effect()
+  linkToCredentialsAccount$: Observable<Action> = this.actions$.pipe(
+    ofType<ProvidersManagementActions.LinkCredentialAccount>(ProvidersManagementActions.ProvidersManagementActionTypes.LinkCredentialAccount),
+    map(action => action.payload),
+    exhaustMap(payload => {
+      return from(this.reAuthenticate().then(async res => {
+        await this.doLinkToCredentials(this.user.email, payload.password);
+      })).pipe(
+        mapTo(new ProvidersManagementActions.LinkSuccess({provider: 'password'})),
+        catchError(error => {
+          if (error.code === 'auth/popup-blocked') {
+            return from(this.reAuthenticateWithRedirect().then(async res => {
+              await this.doLinkToCredentials(this.user.email, payload.password);
+            })).pipe(
+              mapTo(new ProvidersManagementActions.LinkSuccess({provider: 'password'})),
+              catchError(error1 => of(new ProvidersManagementActions.LinkError(error1)))
+            );
+          } else {
+            return of(new ProvidersManagementActions.LinkError(error));
+          }
+        })
+      );
+    })
+  );
   @Effect()
   sendCodeToPhone$: Observable<Action> = this.actions$.pipe(
     ofType<ProvidersManagementActions.SendPhoneNumberCode>(ProvidersManagementActions.ProvidersManagementActionTypes.SendPhoneNumberCode),
     map(action => action.payload),
     exhaustMap(payload => {
       return from((() => {
-        return this.afAuth.auth.currentUser.linkWithPhoneNumber(payload.number, new firebase.auth.RecaptchaVerifier(payload.captchaContainerId, {
+        return this.user.linkWithPhoneNumber(payload.number, new auth.RecaptchaVerifier(payload.captchaContainerId, {
           size: 'invisible',
           callback: token => {
             console.debug('Captcha token', token);
@@ -128,66 +134,57 @@ export class ProvidersManagementEffects {
     })
   );
 
-  @Effect()
-  verifyCode$: Observable<Action> = this.actions$.pipe(
-    ofType<ProvidersManagementActions.VerifyPhoneNumber>(ProvidersManagementActions.ProvidersManagementActionTypes.VerifyPhoneNumber),
-    map(action => action.payload),
-    exhaustMap(payload => {
-      return from(this.phoneNumberConfirmation.confirm(payload.code)).pipe(
-        mapTo(new ProvidersManagementActions.LinkSuccess({provider: 'phone'})),
-        catchError(error => of(new ProvidersManagementActions.LinkError(error)))
-      );
-    })
-  );
-
-  private phoneNumberConfirmation: ConfirmationResult;
+  constructor(private actions$: Actions,
+              private afAuth: AngularFireAuth) {
+    this.userObservable().subscribe(user => this.user = user);
+  }
 
   private doLinkToGoogleProvider(): Promise<any> {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    return this.afAuth.auth.currentUser.linkWithPopup(provider);
+    const provider = new auth.GoogleAuthProvider();
+    return this.user.linkWithPopup(provider);
   }
 
   private doUnlinkToGoogleProvider(): Promise<any> {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    return this.afAuth.auth.currentUser.unlink(provider.providerId);
+    const provider = new auth.GoogleAuthProvider();
+    return this.user.unlink(provider.providerId);
   }
 
   private doLinkToFacebookProvider(): Promise<any> {
-    const provider = new firebase.auth.FacebookAuthProvider();
-    return this.afAuth.auth.currentUser.linkWithPopup(provider);
+    const provider = new auth.FacebookAuthProvider();
+    return this.user.linkWithPopup(provider);
   }
 
   private doUnlinkToFacebookProvider(): Promise<any> {
-    const provider = new firebase.auth.FacebookAuthProvider();
-    return this.afAuth.auth.currentUser.unlink(provider.providerId);
+    const provider = new auth.FacebookAuthProvider();
+    return this.user.unlink(provider.providerId);
   }
 
   private doUnlinkPhoneNumber(): Promise<any> {
-    const provider = new firebase.auth.PhoneAuthProvider();
-    return this.afAuth.auth.currentUser.unlink(provider.providerId);
+    const provider = new auth.PhoneAuthProvider();
+    return this.user.unlink(provider.providerId);
   }
 
   private doLinkToCredentials(email: string, password: string): Promise<any> {
     const credentials = EmailAuthProvider.credential(email, password);
-    return this.afAuth.auth.currentUser.linkAndRetrieveDataWithCredential(credentials);
+    return this.user.linkAndRetrieveDataWithCredential(credentials);
   }
 
   private doUnlinkToCredentials(): Promise<any> {
-    return this.afAuth.auth.currentUser.unlink(EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD);
+    return this.user.unlink(EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD);
   }
 
   private doFacebookReAuthentication(): Promise<any> {
-    const provider = new firebase.auth.FacebookAuthProvider();
-    return this.afAuth.auth.currentUser.reauthenticateWithPopup(provider);
+    const provider = new auth.FacebookAuthProvider();
+    return this.user.reauthenticateWithPopup(provider);
   }
 
   private doFacebookReAuthenticationWithRedirect(): Promise<any> {
-    const provider = new firebase.auth.FacebookAuthProvider();
-    return this.afAuth.auth.currentUser.reauthenticateWithRedirect(provider);
+    const provider = new auth.FacebookAuthProvider();
+    return this.user.reauthenticateWithRedirect(provider);
   }
 
   private reAuthenticate(): Promise<any> {
-    return this.afAuth.auth.fetchSignInMethodsForEmail(this.afAuth.auth.currentUser.email).then(
+    return this.afAuth.fetchSignInMethodsForEmail(this.user.email).then(
       async res => {
         if (res.indexOf('facebook.com') >= 0) {
           await this.doFacebookReAuthentication();
@@ -201,7 +198,7 @@ export class ProvidersManagementEffects {
   }
 
   private reAuthenticateWithRedirect(): Promise<any> {
-    return this.afAuth.auth.fetchSignInMethodsForEmail(this.afAuth.auth.currentUser.email).then(
+    return this.afAuth.fetchSignInMethodsForEmail(this.user.email).then(
       async res => {
         if (res.indexOf('facebook.com') >= 0) {
           await this.doFacebookReAuthenticationWithRedirect();
@@ -215,18 +212,20 @@ export class ProvidersManagementEffects {
   }
 
   private doGoogleReAuthentication(): Promise<any> {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    return this.afAuth.auth.currentUser.reauthenticateWithPopup(provider);
+    const provider = new auth.GoogleAuthProvider();
+    return this.user.reauthenticateWithPopup(provider);
   }
 
   private doGoogleReAuthenticationWithRedirect(): Promise<any> {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    return this.afAuth.auth.currentUser.reauthenticateWithPopup(provider);
+    const provider = new auth.GoogleAuthProvider();
+    return this.user.reauthenticateWithPopup(provider);
   }
 
-  constructor(private actions$: Actions,
-              private afAuth: AngularFireAuth) {
-
+  private userObservable(): Observable<User> {
+    return this.afAuth.user.pipe(
+      take(1),
+      map(user => user)
+    );
   }
 
 }

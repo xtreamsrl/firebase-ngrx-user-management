@@ -3,23 +3,18 @@ import {Actions, Effect, ofType} from '@ngrx/effects';
 
 import {AngularFireAuth} from '@angular/fire/auth';
 
-import {catchError, exhaustMap, map, switchMap} from 'rxjs/operators';
+import {catchError, exhaustMap, map, switchMap, tap} from 'rxjs/operators';
 import {AuthActions} from '../actions';
 import {from, Observable, of} from 'rxjs';
-import * as firebase from 'firebase/app';
-import 'firebase/auth';
+import {auth} from 'firebase/app';
 import {User} from '../models/auth.model';
-import UserCredential = firebase.auth.UserCredential;
 import {ProvidersManagementActionsUnion, SetProviders} from '../actions/providers-management.actions';
+import UserCredential = auth.UserCredential;
 
 export type Action = AuthActions.AuthActionsUnion | ProvidersManagementActionsUnion;
 
 @Injectable()
 export class RegistrationEffects {
-
-  constructor(private actions: Actions,
-              private afAuth: AngularFireAuth) {
-  }
 
   @Effect()
   googleSignUp: Observable<Action> = this.actions.pipe(
@@ -38,7 +33,6 @@ export class RegistrationEffects {
       );
     })
   );
-
   @Effect()
   facebookSignUp: Observable<Action> = this.actions.pipe(
     ofType(AuthActions.AuthActionTypes.FacebookRegistration),
@@ -57,7 +51,6 @@ export class RegistrationEffects {
       );
     })
   );
-
   @Effect()
   signUpWithCredentials: Observable<Action> = this.actions.pipe(
     ofType(AuthActions.AuthActionTypes.CredentialsRegistration),
@@ -79,13 +72,12 @@ export class RegistrationEffects {
       );
     })
   );
-
   @Effect()
   sendVerificationEmail$: Observable<Action> = this.actions.pipe(
     ofType<AuthActions.SendVerificationEmail>(AuthActions.AuthActionTypes.SendVerificationEmail),
     map(action => action.payload),
     exhaustMap(payload => {
-      return from(this.afAuth.auth.currentUser.sendEmailVerification({url: payload.redirectUrl})).pipe(
+      return this.afAuth.user.pipe(tap(user => user.sendEmailVerification({url: payload.redirectUrl}))).pipe(
         map(p => {
           return new AuthActions.VerificationEmailSent();
         }),
@@ -94,20 +86,24 @@ export class RegistrationEffects {
     })
   );
 
+  constructor(private actions: Actions,
+              private afAuth: AngularFireAuth) {
+  }
+
   private doFacebookRegistration(): Promise<UserCredential> {
-    const provider = new firebase.auth.FacebookAuthProvider();
-    return this.afAuth.auth.signInWithPopup(provider);
+    const provider = new auth.FacebookAuthProvider();
+    return this.afAuth.signInWithPopup(provider);
   }
 
   private doGoogleRegistration(): Promise<UserCredential> {
-    const provider = new firebase.auth.GoogleAuthProvider();
+    const provider = new auth.GoogleAuthProvider();
     provider.setCustomParameters({
       prompt: 'select_account'
     });
-    return this.afAuth.auth.signInWithPopup(provider);
+    return this.afAuth.signInWithPopup(provider);
   }
 
   private doSignUpWithCredentials(credentials: { email: string, password: string }): Promise<UserCredential> {
-    return this.afAuth.auth.createUserWithEmailAndPassword(credentials.email, credentials.password);
+    return this.afAuth.createUserWithEmailAndPassword(credentials.email, credentials.password);
   }
 }

@@ -2,6 +2,15 @@
 
 This library allows to easily manage user auth with ngrx and firebase.
 Most of auth flows have bben wrapped in ngrx effect and can be triggered dispatching specifica actions.
+
+Choose the version corresponding to your Angular version:
+
+| Angular |	@xtream/firebase-ngrx-user-management |
+| ------------- | ------------- |
+| 7 |	1.x |
+| 8 |	2.x |
+| 9 |	3.x |
+
 ## Install
 
 `npm install --save @xtream/firebase-ngrx-user-management`

@@ -1,6 +1,6 @@
 {
   "name": "@xtream/firebase-ngrx-user-management",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "User auth management powerd by NgRx and Firebase",
   "homepage": "https://github.com/xtreamsrl/firebase-ngrx-user-management#readme",
   "repository": {
@@ -32,8 +32,7 @@
     "rxjs": "^6.0.0",
     "zone.js": "~0.10.2"
   },
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "browserslist": [
     "last 1 version",
     "> 1%",

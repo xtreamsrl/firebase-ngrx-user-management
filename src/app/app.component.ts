@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {Store} from '@ngrx/store';
-import {AuthActions} from '@xtream/firebase-ngrx-user-management';
+import {AuthActions} from '../../projects/xtream/firebase-ngrx-user-management/src/public_api';
 import {AuthState} from '../../projects/xtream/firebase-ngrx-user-management/src/lib/reducers';
 
 @Component({

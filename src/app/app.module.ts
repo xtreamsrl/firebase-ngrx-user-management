@@ -11,7 +11,7 @@ import {environment} from '../environments/environment';
 import {StoreModule} from '@ngrx/store';
 import {reducers} from './core/reducers';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
-import {FirebaseNgrxUserManagementModule} from '@xtream/firebase-ngrx-user-management';
+import {FirebaseNgrxUserManagementModule} from '../../projects/xtream/firebase-ngrx-user-management/src/lib/firebase-ngrx-user-management.module';
 import {EffectsModule} from '@ngrx/effects';
 import {ToolbarContainerComponent} from './toolbar/containers/toolbar-container/toolbar-container.component';
 import {ToolbarComponent} from './toolbar/components/toolbar/toolbar.component';

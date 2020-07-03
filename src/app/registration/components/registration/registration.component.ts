@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {Credentials} from '@xtream/firebase-ngrx-user-management';
+import {Credentials} from '../../../../../projects/xtream/firebase-ngrx-user-management/src/public_api';
 
 @Component({
   selector: 'app-registration',

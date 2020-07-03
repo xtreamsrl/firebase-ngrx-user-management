@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthActions, AuthState} from '@xtream/firebase-ngrx-user-management';
+import {AuthActions, AuthState} from '../../../../../projects/xtream/firebase-ngrx-user-management/src/public_api';
 import {select, Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
-import {getAuthError, isAuthSuccess} from '@xtream/firebase-ngrx-user-management';
+import {getAuthError, isAuthSuccess} from '../../../../../projects/xtream/firebase-ngrx-user-management/src/public_api';
 
 @Component({
   selector: 'app-login-container',

@@ -2,8 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
 import {getUserState, UserState} from '../../../../../projects/xtream/firebase-ngrx-user-management/src/public_api';
-import {State} from '../../../core/reducers/index';
-import {AuthActions} from '@xtream/firebase-ngrx-user-management';
+import {State} from '../../../core/reducers';
+import {AuthActions} from '../../../../../projects/xtream/firebase-ngrx-user-management/src/public_api';
 import {Router} from '@angular/router';
 
 @Component({

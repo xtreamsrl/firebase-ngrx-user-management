@@ -148,3 +148,9 @@ Social login and registration tries to use popup, if popup-blocked error is trow
 |getUserProviders|Select the map of providers associated with the user `password`, `facebook`, `google`, `phone`|
 
 There are other selectors to get request status of all the previous actions
+
+
+# Who we are
+<img align="left" width="80" height="80" src="https://avatars2.githubusercontent.com/u/38501645?s=450&u=1eb7348ca81f5cd27ce9c02e689f518d903852b1&v=4">
+A proudly 🇮🇹 software development and data science startup.<br>We consider ourselves a family of talented and passionate people building their own products and powerful solutions for our clients. Get to know us more on <a target="_blank" href="https://xtreamers.io">xtreamers.io</a> or follow us on <a target="_blank" href="https://it.linkedin.com/company/xtream-srl">LinkedIn</a>.
+
